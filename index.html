@@ -1,0 +1,2097 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#EFE9DC">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0E191B">
+<meta name="color-scheme" content="light dark">
+<style>[hidden]{display:none!important} body{margin:0} :root{padding-top:env(safe-area-inset-top,0px)}</style>
+</head>
+<body>
+<title>Cuidar de Quem Cuida</title>
+<!--
+=========================================================================
+  CUIDAR DE QUEM CUIDA
+  Site de orientação para profissionais de saúde da Amazônia.
+  Projeto acadêmico: Farmácia, Educação Física e Nutrição, Faculdade Serra Dourada,
+  Altamira (PA).
+
+  COMO ESTE ARQUIVO ESTÁ ORGANIZADO
+    1. <style>      aparência (cores, fontes, formas e cada página)
+    2. <script>     pequeno, gera as texturas de rio e de curvas de nível
+    3. <svg>        ícones reaproveitados em todo o site
+    4. <header>     topo com a marca e o menu
+    5. <main>       as páginas; cada uma é uma <section data-view="nome">
+    6. <footer>     rodapé, menu do celular, aviso "Copiado"
+    7. <script>     final, toda a lógica (teste, pausas, compartilhar...)
+
+  ONDE EDITAR O CONTEÚDO MAIS COMUM
+    - Textos das páginas ........ direto no HTML de cada <section>
+    - Perguntas do teste ........ script final, lista BLOCKS
+    - Recomendações ............. script final, listas PLAN e FOCUS
+    - Rotinas de pausa .......... script final, lista R
+    - Psicólogos parceiros ...... script final, lista PARCEIROS_RAW
+    - Endereço do site .......... script final, SITE_URL
+
+  PRIVACIDADE E SEGURANÇA (resumo)
+    - Nada é enviado a servidor e nada é salvo no aparelho: sem cookies,
+      sem localStorage, sem rastreadores. As respostas ficam só na memória
+      e somem ao recarregar ou ao tocar em "Apagar meus dados desta tela".
+    - Todo texto exibido com innerHTML passa pela função esc(), que impede
+      que um texto vire código (proteção contra XSS).
+    - Links externos abrem em nova aba com rel="noopener noreferrer".
+    - A resposta sobre remédio por conta própria nunca é compartilhada.
+    - Único recurso externo: as fontes do Google Fonts. Ao hospedar, dá
+      para baixar as fontes e servir do próprio site (melhor para a LGPD).
+
+  AO HOSPEDAR (GitHub Pages, Netlify, Vercel...)
+    Configure estes cabeçalhos de segurança no servidor (arquivo _headers
+    no Netlify/Cloudflare Pages). No GitHub Pages, use a política como
+    <meta http-equiv="Content-Security-Policy" content="..."> no <head>.
+      Content-Security-Policy:
+        default-src 'self'; script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src https://fonts.gstatic.com; img-src 'self' data: blob:;
+        connect-src 'none'; form-action 'none'; frame-ancestors 'none';
+        base-uri 'none'; object-src 'none'
+      Referrer-Policy: no-referrer
+      X-Content-Type-Options: nosniff
+      Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+      Strict-Transport-Security: max-age=31536000; includeSubDomains
+    Para tirar o 'unsafe-inline' de script-src, mova os dois <script> para
+    arquivos .js próprios. Ao ligar o canal sigiloso, troque form-action
+    'none' pelo endereço do formulário.
+=========================================================================
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" referrerpolicy="no-referrer" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Instrument+Sans:wght@400..700&display=swap">
+<style>
+/* ============================================================
+   APARÊNCIA DO SITE
+   Cores e tamanhos ficam em variáveis (--nome) no :root. Para mudar
+   uma cor no site inteiro, mude só a variável.
+
+   CUIDAR DE QUEM CUIDA — sistema visual
+   Rio   : linha sinuosa contínua que atravessa as seções (continuidade, deslocamento fluvial)
+   Sol   : círculos e arcos = pausa, nível, medida (cronômetro, medidor, resultado)
+   Margem: borda curva entre seções = transição, como a margem de um rio
+   Folha : forma de lente, só para cuidado e ajuda
+   ============================================================ */
+/* ---------- tokens: TEMA CLARO (padrão) ----------
+   paper = fundo · ink = texto · deep = faixas azul-petróleo
+   sun = ocre (destaques, pausa) · urucum = vermelho (ajuda, alerta)
+   leaf = verde (cuidado, nível baixo) · low/mid/high = cores dos níveis
+   As variáveis --bg, --surface, --sage-soft etc. são apelidos usados
+   pelo script; não apague. */
+:root{
+  --paper:#EFE9DC; --paper-2:#F7F3EA; --mist:#E2DACA; --ink:#14262A; --ink-soft:#4C5C5E; --line:#CDC3AE;
+  --deep:#0F3136; --deep-2:#174047; --on-deep:#EFE9DC; --on-deep-soft:#A9BDB8; --deep-line:rgba(239,233,220,.2);
+  --sun:#E3A33B; --sun-ink:#8A5A12; --urucum:#C4502A; --urucum-ink:#A63F1E; --urucum-deep:#A8401F; --leaf:#3F6B45;
+  --low:#3F6B45; --mid:#A8741C; --high:#C4502A;
+  --accent-em:var(--sun-ink); --river-c:var(--line); --band-bg:var(--paper); --chat-ink:#14262A;
+  --bg:var(--paper); --surface:var(--paper-2); --surface-2:var(--mist);
+  --sage-soft:#DCE4D3; --sun-soft:#F1DDB4; --clay-soft:#F0D3C5; --clay:var(--urucum); --sage:#6F9573;
+  --chat-bg:#E2DACA; --bubble:#DDF3CF;
+  --r:3px; --r-sm:2px;
+  --display:"Fraunces", Georgia, "Times New Roman", serif;
+  --body:"Instrument Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ease-out:cubic-bezier(0.23,1,0.32,1); --ease-in-out:cubic-bezier(0.77,0,0.175,1); --ease-drawer:cubic-bezier(0.32,0.72,0,1);
+  --gut:clamp(18px,5vw,64px); --rw:clamp(16px,8vw,120px);
+}
+/* ---------- tokens: TEMA ESCURO ----------
+   Aparece quando o aparelho está no modo escuro (1º bloco) ou quando o
+   visualizador força o escuro (2º bloco). Os dois blocos têm os mesmos
+   valores: se mudar um, mude o outro. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E191B; --paper-2:#152326; --mist:#1D2E31; --ink:#ECE5D5; --ink-soft:#A8B5B1; --line:#2C3F42;
+    --deep:#17363B; --deep-2:#1F454B; --on-deep:#ECE5D5; --on-deep-soft:#9FB5B0; --deep-line:rgba(236,229,213,.18);
+    --sun:#E8B04F; --sun-ink:#E8B04F; --urucum:#E0714B; --urucum-ink:#EC8E6B; --urucum-deep:#7C2F18; --leaf:#8DB88F;
+    --low:#8DB88F; --mid:#E0B25A; --high:#EC8E6B;
+    --sage-soft:#1E3A30; --sun-soft:#3A301D; --clay-soft:#3B241C; --chat-bg:#0A1416; --bubble:#1E4A3A; --chat-ink:#ECE5D5;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0E191B; --paper-2:#152326; --mist:#1D2E31; --ink:#ECE5D5; --ink-soft:#A8B5B1; --line:#2C3F42;
+  --deep:#17363B; --deep-2:#1F454B; --on-deep:#ECE5D5; --on-deep-soft:#9FB5B0; --deep-line:rgba(236,229,213,.18);
+  --sun:#E8B04F; --sun-ink:#E8B04F; --urucum:#E0714B; --urucum-ink:#EC8E6B; --urucum-deep:#7C2F18; --leaf:#8DB88F;
+  --low:#8DB88F; --mid:#E0B25A; --high:#EC8E6B;
+  --sage-soft:#1E3A30; --sun-soft:#3A301D; --clay-soft:#3B241C; --chat-bg:#0A1416; --bubble:#1E4A3A; --chat-ink:#ECE5D5;
+}
+
+/* ---------- base: tipografia e utilidades gerais ---------- */
+*{box-sizing:border-box}
+html{scroll-padding-top:84px}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+main,footer.site{overflow-x:hidden;overflow-x:clip}
+a{color:var(--ink);text-decoration-color:var(--sun-ink);text-decoration-thickness:1.5px;text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+p{margin:0}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance;font-variation-settings:"SOFT" 50,"opsz" 144}
+h1{font-size:clamp(2.7rem,8.4vw,6.2rem);line-height:.96;letter-spacing:-.025em;font-weight:340}
+h2{font-size:clamp(2.4rem,6.6vw,4.8rem);line-height:.98;letter-spacing:-.022em;font-weight:360}
+h3{font-size:1.45rem;line-height:1.15;font-weight:480;font-variation-settings:"SOFT" 50,"opsz" 36}
+h1 em,h2 em{font-style:italic;color:var(--accent-em);font-variation-settings:"SOFT" 100,"opsz" 144}
+.muted{color:var(--ink-soft)}
+.fine{font-size:.82rem;color:var(--ink-soft);line-height:1.5}
+/* .sr esconde da tela mas mantém para leitores de tela */
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* .wrap = coluna central com margem lateral; .stack = itens empilhados; .row = itens em linha */
+.wrap{max-width:1240px;margin-inline:auto;padding-inline:var(--gut);position:relative;z-index:1}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.kicker,.eyebrow{font:700 .72rem/1.3 var(--body);letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft)}
+.kicker{display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:30px;height:1.5px;background:currentColor}
+.lead{font-size:clamp(1.1rem,2.1vw,1.32rem);line-height:1.5;color:var(--ink-soft);max-width:40ch}
+
+/* ---------- ícones (glyphs) ----------
+   Desenhados a partir das 4 formas da marca (arco, sol, folha, ondas).
+   Ficam no <svg> de símbolos logo após o <style>; use com <use href="#g-..."> */
+.g{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.gfill{fill:currentColor;stroke:none}
+.g.solid{fill:currentColor}
+
+/* ---------- botões ----------
+   .btn = contorno · .btn.solid = preenchido com o ponto de sol
+   .small-btn = ação em texto com seta · .linkbtn = botão com cara de link */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:0 22px;border:1.5px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);font:600 1rem var(--body);cursor:pointer;text-decoration:none;transition:background-color 200ms ease,color 200ms ease,transform 160ms var(--ease-out)}
+.btn.solid{background:var(--ink);color:var(--paper)}
+.btn.solid::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--sun);transition:transform 200ms var(--ease-out)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.deep .btn.solid{background:var(--sun);border-color:var(--sun);color:#10262A}
+.deep .btn.solid::before{background:#10262A}
+.small-btn{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0;border:0;background:none;color:var(--ink);font:600 .92rem var(--body);cursor:pointer;text-decoration:underline;text-decoration-color:var(--sun-ink);text-decoration-thickness:1.5px;text-underline-offset:5px}
+.small-btn::after{content:"→";text-decoration:none;display:inline-block;transition:transform 200ms var(--ease-out)}
+.deep .small-btn{text-decoration-color:var(--sun)}
+.linkbtn{all:unset;cursor:pointer;color:var(--ink);text-decoration:underline;text-decoration-color:var(--sun-ink);text-underline-offset:3px;font-weight:600}
+.linkbtn:focus-visible{outline:3px solid var(--sun)}
+
+/* ---------- topo fixo (marca, menu no computador, botão de ajuda) ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--paper) 93%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:22px;min-height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--display);font-size:1.2rem;white-space:nowrap;font-variation-settings:"SOFT" 100,"opsz" 36;letter-spacing:-.01em}
+.brand em{font-style:italic;color:var(--sun-ink)}
+.mark{width:32px;height:32px;flex:none}
+.mark .m-sun{fill:var(--sun)}
+.mark .m-river{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round}
+.topnav{display:none;gap:22px;margin-left:auto}
+.topnav a{white-space:nowrap;text-decoration:none;color:var(--ink-soft);font-weight:600;font-size:.92rem;padding-block:6px;border-bottom:2px solid transparent}
+.topnav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--sun)}
+.help-btn{margin-left:auto;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;background:var(--urucum-deep);color:#F6EFE3;font-weight:600;font-size:.92rem;text-decoration:none;white-space:nowrap}
+.help-btn .g{width:18px;height:18px}
+.topnav + .help-btn{margin-left:0}
+@media (min-width:1100px){.topnav{display:flex}}
+@media (max-width:700px){:root{--rw:15px}}
+@media (max-width:430px){.brand{font-size:1.02rem}.mark{width:28px;height:28px}.help-btn{padding:0 11px;font-size:.84rem}.help-btn .g{display:none}}
+
+/* ---------- menu inferior do celular e gaveta "Mais" ----------
+   Some a partir de 1100px de largura, quando aparece o menu do topo. */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--paper);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);display:grid;grid-template-columns:repeat(5,1fr)}
+.bottomnav a,.bottomnav button{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 2px 10px;font:600 .7rem var(--body);color:var(--ink-soft);text-decoration:none;background:none;border:0;cursor:pointer;min-height:60px}
+.bottomnav [aria-current="page"]{color:var(--ink)}
+.bottomnav [aria-current="page"]::before{content:"";position:absolute;top:-1px;left:30%;right:30%;height:3px;background:var(--sun)}
+@media (min-width:1100px){.bottomnav{display:none}}
+.more{position:fixed;left:0;right:0;bottom:calc(60px + env(safe-area-inset-bottom,0px));z-index:31;background:var(--paper-2);border-top:1.5px solid var(--ink);padding:8px var(--gut) 14px;display:flex;flex-direction:column}
+.more a{padding:13px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink);font-family:var(--display);font-size:1.3rem}
+.more a:last-child{border-bottom:0}
+
+/* ---------- elementos do sistema visual ----------
+   .deep  faixa azul-petróleo. Redefine as cores lá dentro, para que
+          textos, bordas e botões se adaptem sozinhos ao fundo escuro.
+   .soft  faixa clara alternativa.
+   .edge-t / .edge-b  borda curva ("margem de rio") em cima / embaixo.
+          O desenho da curva é um SVG embutido usado como máscara.
+   .river linha sinuosa contínua. Todas começam e terminam no meio da
+          caixa (x=50), por isso as linhas de seções vizinhas se encontram. */
+.deep{position:relative;background:var(--deep);color:var(--on-deep);
+  --ink:var(--on-deep);--ink-soft:var(--on-deep-soft);--line:var(--deep-line);--paper-2:var(--deep-2);--surface:var(--deep-2);--surface-2:var(--deep-2);
+  --accent-em:var(--sun);--sun-ink:var(--sun);--river-c:var(--sun);--band-bg:var(--deep);
+  --sun-soft:rgba(227,163,59,.16);--sage-soft:rgba(141,184,143,.16);--clay-soft:rgba(224,113,75,.18)}
+.soft{position:relative;background:var(--paper-2);--paper-2:var(--paper);--band-bg:var(--paper-2)}
+.edge-t{margin-top:58px}
+.edge-b{margin-bottom:58px}
+.edge-t::before,.edge-b::after{content:"";position:absolute;left:0;right:0;height:58px;background:inherit;pointer-events:none;z-index:0;
+  -webkit-mask:var(--m) center/100% 100% no-repeat;mask:var(--m) center/100% 100% no-repeat}
+.edge-t::before{top:-57px;--m:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 58' preserveAspectRatio='none'%3E%3Cpath d='M0 58 L0 38 C 200 6, 430 2, 650 24 C 870 46, 1090 52, 1290 28 C 1370 18, 1415 16, 1440 18 L1440 58 Z'/%3E%3C/svg%3E")}
+.edge-b::after{bottom:-57px;--m:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 58' preserveAspectRatio='none'%3E%3Cpath d='M0 0 L0 22 C 250 54, 530 56, 770 32 C 990 10, 1210 6, 1440 36 L1440 0 Z'/%3E%3C/svg%3E")}
+.river{position:absolute;top:0;bottom:0;left:0;width:var(--rw);height:100%;pointer-events:none;overflow:visible;z-index:0}
+.river path{fill:none;stroke:var(--river-c);stroke-width:1.6;vector-effect:non-scaling-stroke}
+.river.into-edge{bottom:-58px;height:calc(100% + 58px)}
+.river.from-edge{top:-58px;height:calc(100% + 58px)}
+
+/* ---------- notas (avisos com marcador redondo) ----------
+   .note = informativo · .note.warn = alerta (urucum) · .note.sun = pendência */
+.note{position:relative;padding:14px 0 14px 32px;border-top:1px solid var(--line);font-size:.97rem;line-height:1.55;background:none!important;border-left:0!important;border-radius:0!important}
+.note::before{content:"";position:absolute;left:0;top:19px;width:14px;height:14px;border-radius:50%;background:var(--sun)}
+.note.warn::before{background:var(--urucum)}
+.note.sun::before{background:transparent;border:1.5px solid var(--sun-ink)}
+
+/* ---------- folhas (sheets) com recorte de sol ----------
+   Caixas com um recorte redondo no canto superior direito (máscara radial). */
+.sheet,.panel{position:relative;background:var(--paper-2);padding:clamp(24px,4vw,44px);border-radius:0;
+  -webkit-mask:radial-gradient(circle at 100% 0,transparent 22px,#000 23px);mask:radial-gradient(circle at 100% 0,transparent 22px,#000 23px)}
+.res-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px 16px;flex-wrap:wrap}
+
+/* ---------- formulários ----------
+   Campos só com linha inferior. textarea.ruled = papel pautado.
+   .opts = opções em botões; .opts.vertical = lista de respostas do teste.
+   Fonte dos campos fica em 17px (acima de 16px evita zoom no iPhone). */
+.field{display:flex;flex-direction:column;gap:8px}
+.field > label,.field legend{font-weight:600;font-size:.95rem}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+input[type=text],select,textarea{font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:1.5px solid var(--ink);border-radius:0;padding:10px 2px;width:100%}
+select{appearance:none;-webkit-appearance:none;min-height:48px;padding-right:30px;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 14px) 55%,calc(100% - 8px) 55%;background-size:6px 6px;background-repeat:no-repeat}
+select option{color:#14262A;background:#F7F3EA}
+textarea{min-height:140px;resize:vertical;border:1.5px solid var(--line);padding:14px;line-height:1.5}
+textarea.ruled{border:0;border-bottom:1.5px solid var(--ink);padding:0 2px;line-height:34px;background-image:repeating-linear-gradient(to bottom,transparent 0 33px,var(--line) 33px 34px);background-attachment:local;min-height:170px}
+.checks{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:.95rem}
+.checks label{display:inline-flex;align-items:center;gap:10px;min-height:36px}
+.checks input,label.checks input{width:18px;height:18px;accent-color:var(--sun)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{position:relative}
+.opts input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opts span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1.5px solid var(--ink);font-weight:600;font-size:.93rem;transition:background-color 150ms ease,color 150ms ease,transform 160ms var(--ease-out)}
+.opts input:checked + span{background:var(--ink);color:var(--band-bg)}
+.opts input:focus-visible + span{outline:3px solid var(--sun);outline-offset:2px}
+.opts.vertical{flex-direction:column;gap:0}
+.opts.vertical label,.opts.vertical span{width:100%}
+.opts.vertical span{gap:16px;min-height:58px;padding:0 4px;border:0;border-top:1px solid var(--line);font-size:1.06rem;font-weight:500}
+.opts.vertical label:last-child span{border-bottom:1px solid var(--line)}
+.opts.vertical span::before{content:"";flex:none;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--ink-soft);transition:background-color 200ms ease,border-color 200ms ease,box-shadow 240ms var(--ease-out)}
+.opts.vertical input:checked + span{background:transparent;color:var(--ink)}
+.opts.vertical input:checked + span::before{background:var(--sun);border-color:var(--sun);box-shadow:0 0 0 6px color-mix(in srgb,var(--sun) 24%,transparent)}
+.qtext{font-family:var(--display);font-size:clamp(1.6rem,4vw,2.35rem);line-height:1.14;font-weight:400;padding:0;margin:8px 0 18px;text-wrap:balance;font-variation-settings:"SOFT" 60,"opsz" 72}
+
+/* ---------- abas de texto (formato, filtros, rotinas) ---------- */
+.seg,.filter,.tabs{display:flex;flex-wrap:wrap;border-bottom:1.5px solid var(--line)}
+.seg button,.filter button,.tabs button{background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-1.5px;padding:10px 14px 10px 0;margin-right:14px;min-height:44px;font:600 .92rem var(--body);color:var(--ink-soft);cursor:pointer;border-radius:0;box-shadow:none}
+.seg button[aria-pressed="true"],.filter button[aria-pressed="true"],.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sun);background:none}
+
+/* ---------- resultado do teste ----------
+   .gauge = medidor semicircular · .rec = caixa da recomendação, com o
+   círculo da cor do nível no canto · .chat/.bubble = prévia do WhatsApp */
+.bar{height:4px;background:var(--line);position:relative}
+.bar b{display:block;height:100%}
+.res{display:flex;flex-direction:column}
+.res-row{display:grid;gap:10px;padding-block:16px;border-top:1px solid var(--line)}
+.res-row .bar{height:6px}
+.score{font-family:var(--display);font-size:2.1rem;font-weight:380;line-height:1;font-variant-numeric:tabular-nums lining-nums}
+.score.big{font-size:clamp(3.8rem,11vw,5.4rem);font-weight:300;letter-spacing:-.04em}
+.pill{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.pill::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--c,var(--ink))}
+.avg{display:grid;justify-items:center;padding-top:10px}
+.gauge,.avg-num{grid-area:1/1}
+.gauge{width:min(100%,400px);overflow:visible}
+.g-track{fill:none;stroke:var(--line);stroke-width:14}
+.g-val{fill:none;stroke-width:14;}
+.g-tick{stroke:var(--ink);stroke-width:1.5}
+.g-lab{font:700 10px var(--body);fill:var(--ink-soft);letter-spacing:.05em}
+.avg-num{align-self:end;display:flex;flex-direction:column;align-items:center;gap:8px;padding-bottom:2%}
+.avg-cap{grid-row:2;text-align:center;max-width:44ch;font-size:.86rem;margin-top:12px}
+.rec{position:relative;overflow:hidden;padding:clamp(24px,4vw,40px);background:var(--paper-2)}
+.rec::before{content:"";position:absolute;right:-62px;top:-62px;width:150px;height:150px;border-radius:50%;background:var(--c)}
+.rec > *{position:relative}
+.rec > .eyebrow,.rec > h3{padding-right:96px}
+.rec h3{font-size:clamp(1.8rem,4.2vw,2.5rem)!important;font-weight:380;line-height:1.02}
+.rec ol{padding-left:22px!important}
+.rec li::marker{font-family:var(--display);color:var(--ink-soft)}
+.chat{padding:18px;background:var(--chat-bg);--ink:var(--chat-ink)}
+.bubble{max-width:460px;margin-left:auto;background:var(--bubble);color:var(--chat-ink);border-radius:10px 2px 10px 10px;padding:12px 14px;font-size:.95rem;line-height:1.5;box-shadow:0 1px 1px rgba(0,0,0,.08);overflow-wrap:anywhere}
+.bubble .meta{display:block;text-align:right;font-size:.72rem;opacity:.65;margin-top:4px}
+.cardimg{display:block;width:100%;max-width:340px;margin-inline:auto;box-shadow:0 18px 40px -18px rgba(0,0,0,.35)}
+
+/* ============ PÁGINA: INÍCIO ============
+   .hero = faixa escura do topo · .hero-art = arco com textura + sol que
+   atravessam a borda para a seção seguinte · .index = atalhos em degraus
+   · .why/.fact = números grandes · .closing = frase final com o sol se pondo */
+.hero{padding-block:clamp(44px,7vw,100px) clamp(170px,17vw,210px)}
+.hero-in > *{max-width:min(100%,780px)}
+.hero h1{max-width:12.5ch}
+.hero .lead{margin-top:26px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px 22px;margin-top:34px;align-items:center}
+.hero-actions .btn:not(.solid){border-color:transparent;padding:0 2px;border-bottom:1.5px solid var(--on-deep)}
+#invite{margin-top:26px;max-width:620px}
+.hero-art{position:absolute;right:clamp(-26px,5vw,90px);bottom:-120px;width:clamp(140px,27vw,340px);z-index:4;pointer-events:none}
+.arch{position:relative;aspect-ratio:3/4.3;border-radius:999px 999px 0 0;overflow:hidden;background:var(--deep-2);box-shadow:inset 0 0 0 1.5px var(--sun)}
+.arch .tex{position:absolute;inset:0;background:var(--sun);opacity:.5;-webkit-mask-image:var(--tex-river,none);mask-image:var(--tex-river,none);-webkit-mask-size:cover;mask-size:cover}
+.sun-disc{position:absolute;width:64%;aspect-ratio:1;border-radius:50%;background:var(--sun);left:-36%;bottom:12%;animation:rise 1.1s var(--ease-out) both}
+@keyframes rise{from{transform:translateY(34px)}to{transform:none}}
+.home-rest{position:relative}
+.entries{padding-top:clamp(150px,13vw,160px)}
+.index{display:flex;flex-direction:column;margin-top:24px;max-width:880px}
+.ix{display:grid;grid-template-columns:44px 1fr auto;column-gap:18px;align-items:center;padding-block:22px 20px;border-top:1.5px solid var(--ink);text-decoration:none;color:var(--ink)}
+.ix .g{grid-row:span 2;width:38px;height:38px;stroke-width:1.4}
+.ix-t{font-family:var(--display);font-size:clamp(1.9rem,4.8vw,3.3rem);line-height:1;font-weight:360;letter-spacing:-.02em;font-variation-settings:"SOFT" 100,"opsz" 144}
+.ix-d{grid-column:2;color:var(--ink-soft);font-size:.98rem;margin-top:6px}
+.ix-arrow{grid-row:1 / span 2;grid-column:3;font-size:1.5rem;transition:transform 200ms var(--ease-out)}
+.ix.urgent .ix-t,.ix.urgent .g{color:var(--urucum-ink)}
+@media (min-width:760px){.ix:nth-child(2){margin-left:9%}.ix:nth-child(3){margin-left:18%}}
+.why{padding-block:clamp(90px,12vw,170px) 20px;display:grid;gap:44px}
+.why h2{font-size:clamp(2.1rem,5.2vw,3.8rem);margin-top:18px}
+.why-head .muted{margin-top:18px;max-width:46ch}
+.fact b{display:block;font-family:var(--display);font-weight:300;font-size:clamp(4.4rem,15vw,11rem);line-height:.82;letter-spacing:-.05em;font-variation-settings:"SOFT" 20,"opsz" 144;font-variant-numeric:lining-nums}
+.fact p{max-width:32ch;margin-top:16px;padding-top:12px;border-top:1.5px solid var(--ink)}
+.fact small{display:block;margin-top:8px;font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.f2 b{color:var(--urucum-ink)}
+.f3 b{color:var(--leaf)}
+@media (max-width:899px){.f2{justify-self:end;text-align:right}.f2 p{margin-left:auto}}
+@media (min-width:900px){
+  .why{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;row-gap:0}
+  .why-head{grid-column:1 / span 6}
+  .f1{grid-column:6 / span 7;margin-top:30px}
+  .f2{grid-column:1 / span 5;margin-top:40px}
+  .f3{grid-column:8 / span 5;margin-top:190px}
+}
+.closing{position:relative;padding-block:clamp(90px,14vw,190px) clamp(130px,18vw,240px)}
+.closing::before{content:"";position:absolute;z-index:0;right:clamp(-60px,6vw,120px);bottom:clamp(-150px,-12vw,-80px);width:clamp(240px,40vw,520px);aspect-ratio:1;border-radius:50%;background:var(--sun)}
+.closing blockquote{position:relative;z-index:1;margin:0;font-family:var(--display);font-style:italic;font-weight:320;font-size:clamp(2rem,5vw,3.8rem);line-height:1.06;letter-spacing:-.015em;max-width:15ch;font-variation-settings:"SOFT" 100,"opsz" 144}
+.closing blockquote span{font-style:normal;color:var(--sun-ink)}
+
+/* ============ PÁGINA: COMO ESTOU (autoavaliação) ============
+   No computador: título fixo à esquerda, teste à direita. */
+.test-grid{padding-block:clamp(40px,6vw,90px) 60px;display:grid;grid-template-columns:minmax(0,1fr);gap:34px}
+.test-head{position:relative;isolation:isolate}
+.test-head h2{font-size:clamp(3.4rem,10vw,7rem);line-height:.86;margin-top:20px}
+.test-head h2 em{font-size:1.25em;line-height:0}
+.test-head .lead{margin-top:22px;font-size:1.08rem}
+.test-head .note{margin-top:22px}
+.head-arc{position:absolute;z-index:-1;left:-18%;top:-6%;width:min(118%,560px);overflow:visible}
+.head-arc{opacity:.75}
+.head-arc path{fill:none;stroke:var(--sun);stroke-width:1.4}
+.head-arc line{stroke:var(--sun);stroke-width:1.4}
+.head-arc text{font:700 11px var(--body);fill:var(--sun-ink);letter-spacing:.06em}
+#cbi{scroll-margin-top:84px}
+@media (min-width:980px){.test-grid{grid-template-columns:minmax(0,5fr) minmax(0,7fr);column-gap:72px}.test-head{position:sticky;top:96px;align-self:start}}
+
+/* ============ PÁGINA: REMÉDIO NÃO É PAUSA ============
+   .cycle = diagrama do ciclo (no celular vira a lista .cycle-list)
+   .cmp = tabela comparativa · .signs = sinais de alerta · .urgent-band = aviso */
+.rem-head{padding-block:clamp(40px,6vw,90px) 20px;display:grid;gap:24px}
+.rem-head h2{font-size:clamp(2.8rem,8.6vw,6.4rem);line-height:.9}
+.rem-head h2 em{color:var(--urucum-ink)}
+@media (min-width:900px){.rem-head .lead{margin-left:42%;max-width:36ch}}
+.cycle-band{padding-block:clamp(50px,7vw,90px)}
+.cycle-band h3{font-size:clamp(1.6rem,3vw,2.2rem);font-style:italic;font-weight:360;margin-bottom:10px}
+.cycle{width:100%;max-width:760px;display:block;margin:10px auto 0;overflow:visible}
+.c-track{fill:none;stroke:var(--on-deep-soft);stroke-width:1.2;stroke-dasharray:2 7}
+.c-arc{fill:none;stroke:var(--on-deep);stroke-width:1.8}
+.c-head{fill:var(--on-deep)}
+.c-s1{fill:var(--sun)} .c-s2{fill:var(--deep);stroke:var(--on-deep);stroke-width:2} .c-s3{fill:var(--urucum)} .c-s4{fill:var(--on-deep-soft)}
+.c-t{font:600 15px var(--body);fill:var(--on-deep)}
+.c-d{font:400 13px var(--body);fill:var(--on-deep-soft)}
+.c-mid{font:italic 400 24px var(--display);fill:var(--sun)}
+.cycle-list{display:none;list-style:none;margin:18px 0 0;padding:0;position:relative}
+.cycle-list::before{content:"";position:absolute;left:8px;top:12px;bottom:12px;width:1.5px;background:var(--on-deep-soft);opacity:.5}
+.cycle-list li{position:relative;padding:12px 0 12px 36px}
+.cycle-list li::before{content:"";position:absolute;left:0;top:18px;width:17px;height:17px;border-radius:50%;background:var(--c)}
+.cycle-list strong{display:block;font-family:var(--display);font-weight:400;font-size:1.3rem}
+.cycle-list span{color:var(--on-deep-soft);font-size:.95rem}
+.cycle-list .mid{padding-left:36px;font-family:var(--display);font-style:italic;color:var(--sun);font-size:1.3rem}
+.cycle-list .mid::before{display:none}
+@media (max-width:640px){.cycle{display:none}.cycle-list{display:block}}
+.rem-body{display:grid;grid-template-columns:minmax(0,1fr);gap:70px;padding-block:20px 10px}
+.compare > div,.signs-wrap{min-width:0}
+@media (min-width:900px){.compare{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);column-gap:40px}.compare h3{padding-top:14px}}
+.tbl-wrap{overflow-x:auto}
+table.cmp{width:100%;border-collapse:collapse;min-width:560px;font-size:.98rem}
+table.cmp th,table.cmp td{padding:16px 18px 16px 0;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+table.cmp thead th{border-top:0;font-family:var(--display);font-weight:400;font-size:1.35rem;padding-bottom:12px}
+table.cmp thead th:nth-child(2){color:var(--leaf)}
+table.cmp thead th:nth-child(3){color:var(--urucum-ink);font-style:italic}
+table.cmp tbody th{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-soft);font-weight:700;width:22%;padding-top:21px}
+.compare .fine{margin-top:14px;font-size:.95rem;font-family:var(--display);font-style:italic}
+.signs-wrap h3{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:360;margin-bottom:18px}
+.signs{list-style:none;padding:0;margin:0;display:grid;gap:0 44px}
+.signs li{position:relative;padding:18px 0 18px 32px;border-top:1px solid var(--line);font-family:var(--display);font-size:1.3rem;line-height:1.25;font-variation-settings:"SOFT" 60,"opsz" 36}
+.signs li::before{content:"";position:absolute;left:0;top:25px;width:14px;height:14px;border-radius:50%;background:var(--urucum)}
+@media (min-width:760px){.signs{grid-template-columns:1fr 1fr;padding-bottom:40px}.signs li:nth-child(even){transform:translateY(40px)}}
+.urgent-band{background:var(--urucum-deep);color:#F6EFE3;margin-block:60px 34px;position:relative;overflow:hidden}
+.urgent-band .wrap{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start;padding-block:30px}
+.urgent-band .g{width:34px;height:34px;color:#F6EFE3}
+.urgent-band p{font-size:1.08rem;max-width:62ch}
+.urgent-band strong{font-family:var(--display);font-weight:500;font-size:1.3rem;display:block;margin-bottom:4px;line-height:1.2}
+.actions{padding-bottom:40px}
+
+/* ============ PÁGINA: PAUSAS ATIVAS ============
+   .dial = cronômetro circular, puxado para cima para cruzar a borda
+   .steps = linha do tempo dos passos */
+.pause-head{padding-block:clamp(40px,6vw,90px) clamp(120px,14vw,170px);display:grid;gap:22px}
+@media (min-width:900px){.pause-head{grid-template-columns:minmax(0,6fr) minmax(0,5fr);align-items:end;column-gap:60px}}
+.pause-head h2{font-size:clamp(3rem,9vw,6.4rem);line-height:.88}
+.pause-band{padding-block:0 60px}
+.pause-grid{display:grid;gap:34px}
+@media (min-width:900px){.pause-grid{grid-template-columns:minmax(0,5fr) minmax(0,6fr);column-gap:70px;align-items:start}}
+.dial{position:relative;width:min(84%,380px);aspect-ratio:1;justify-self:center;margin-top:-130px;z-index:2}
+@media (min-width:900px){.dial{margin-top:-170px;width:100%;max-width:420px}}
+.dial svg{width:100%;height:100%;overflow:visible}
+.d-back{fill:var(--deep)}
+.d-track{fill:none;stroke:var(--deep-line);stroke-width:10}
+#ring{stroke:var(--sun)!important;stroke-width:10}
+#breath{fill:var(--sun)!important;opacity:.16}
+.d-horizon{fill:none;stroke:var(--sun);stroke-width:1.4;opacity:.8}
+.breath{transform-origin:140px 140px}
+.dial .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px}
+.dial .time{font-family:var(--display);font-size:clamp(3.2rem,10vw,4.8rem);font-weight:300;letter-spacing:-.03em;font-variant-numeric:tabular-nums lining-nums;line-height:1}
+.dial .cue{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;color:var(--sun);min-height:1.5em;margin-top:10px}
+.pause-side{padding-top:clamp(10px,3vw,40px)}
+.steps{list-style:none;margin:0;padding:0;position:relative}
+.steps::before{content:"";position:absolute;left:13px;top:18px;bottom:18px;width:1.5px;background:var(--line)}
+.steps li{position:relative;display:grid;grid-template-columns:28px 1fr auto;gap:16px;padding:9px 0;align-items:start}
+.steps li .n{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:.78rem;font-weight:700;background:var(--band-bg);border:1.5px solid var(--line);color:var(--ink)}
+.steps li.on .n{background:var(--sun);border-color:var(--sun);color:#10262A}
+.steps li.on strong{color:var(--sun)}
+.steps li.done{opacity:.45}
+.steps li small{display:block;color:var(--ink-soft);font-size:.9rem;line-height:1.45;margin-top:2px}
+.steps li .d{font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:.86rem;padding-top:3px}
+.pause-foot{padding-block:10px 50px}
+/* ---------- bloco de alimentação (Nutrição) ----------
+   Título à esquerda e lista de orientações em duas colunas à direita. */
+.food{display:grid;gap:26px;padding-block:20px 30px}
+@media (min-width:900px){.food{grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:60px;align-items:start}}
+.food h3{font-size:clamp(2rem,5vw,3.2rem);font-weight:340;line-height:.95;margin-top:18px}
+.food h3 em{font-style:italic;color:var(--leaf)}
+.food-head .muted{margin-top:16px;max-width:40ch}
+.food-list{list-style:none;margin:0;padding:0;display:grid;gap:0 36px}
+@media (min-width:700px){.food-list{grid-template-columns:1fr 1fr}}
+.food-list li{position:relative;padding:16px 0 16px 30px;border-top:1px solid var(--line)}
+.food-list li::before{content:"";position:absolute;left:0;top:22px;width:13px;height:13px;border-radius:50%;background:var(--leaf)}
+.food .note{grid-column:1 / -1}
+
+
+/* ============ PÁGINA: CANAL SIGILOSO ============
+   .letter = formulário em forma de carta, com carimbo "Anônimo" */
+.letter-grid{padding-block:clamp(40px,6vw,90px) 70px;display:grid;gap:40px}
+@media (min-width:980px){.letter-grid{grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:80px}.letter-side{position:sticky;top:96px;align-self:start}}
+.letter-side h2{font-size:clamp(2.8rem,7.4vw,5.2rem);line-height:.92;margin-top:20px}
+.letter-side .muted{margin-top:22px;max-width:40ch}
+.letter{position:relative;background:var(--paper-2);padding:clamp(28px,4.5vw,54px);display:flex;flex-direction:column;gap:22px}
+.letter::after{content:"Anônimo";position:absolute;top:-30px;right:clamp(14px,4vw,40px);width:76px;height:76px;border-radius:50%;border:1.5px dashed var(--urucum-ink);color:var(--urucum-ink);display:grid;place-items:center;font:700 .62rem var(--body);letter-spacing:.14em;text-transform:uppercase;transform:rotate(-12deg);background:var(--paper)}
+.letter .salut{font-family:var(--display);font-style:italic;font-size:1.4rem;color:var(--ink-soft)}
+.qa{margin-top:10px}
+.qa h3{font-size:1.6rem;font-weight:360;margin-bottom:8px}
+.qa details{border-top:1px solid var(--line);padding-block:18px}
+.qa summary{list-style:none;cursor:pointer;font-family:var(--display);font-size:1.2rem;line-height:1.3;display:grid;grid-template-columns:1fr auto;gap:16px;font-variation-settings:"SOFT" 60,"opsz" 36}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"";width:18px;height:18px;margin-top:5px;border-radius:50%;border:1.5px solid var(--ink);transition:background-color 200ms ease,border-color 200ms ease}
+.qa details[open] summary::after{background:var(--sun);border-color:var(--sun)}
+.qa details p{margin-top:12px;max-width:60ch}
+
+/* ============ PÁGINA: SEUS DIREITOS ============
+   .right = cada direito com rótulo grande · .route = 3 passos numa linha */
+.rights-head{padding-block:clamp(40px,6vw,90px) 10px}
+.rights-head h2{font-size:clamp(2.8rem,8vw,6rem);line-height:.9;margin-top:20px}
+.rights-head .lead{margin-top:22px}
+.rights{display:flex;flex-direction:column;margin-block:44px 20px}
+.right{display:grid;gap:10px 44px;padding-block:28px 30px;border-top:1.5px solid var(--ink)}
+.right .big{font-family:var(--display);font-weight:300;font-size:clamp(3.2rem,9vw,6rem);line-height:.86;letter-spacing:-.04em;font-variation-settings:"SOFT" 30,"opsz" 144}
+.right h3{font:700 .72rem/1.3 var(--body);letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px}
+.right p{max-width:48ch}
+.r2 .big{color:var(--leaf)}
+.r3 .big{font-style:italic;font-size:clamp(2.6rem,7vw,4.6rem);color:var(--sun-ink)}
+@media (min-width:860px){.right{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:end}.r2{margin-left:9%}.r3{margin-left:18%}}
+.route-band{padding-block:clamp(56px,7vw,90px)}
+.route-band h3{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:340}
+.route{list-style:none;margin:34px 0 44px;padding:0;display:grid;gap:26px;position:relative;counter-reset:r}
+.route::before{content:"";position:absolute;left:22px;top:10px;bottom:10px;width:1.5px;background:var(--sun)}
+.route li{position:relative;counter-increment:r;padding:8px 0 0 70px;max-width:34ch}
+.route li::before{content:counter(r);position:absolute;left:0;top:0;width:45px;height:45px;border-radius:50%;background:var(--sun);color:#10262A;display:grid;place-items:center;font:400 1.35rem var(--display)}
+@media (min-width:860px){.route{grid-template-columns:repeat(3,1fr);gap:40px}.route::before{left:0;right:0;top:22px;bottom:auto;width:auto;height:1.5px}.route li{padding:70px 0 0 0}}
+.letter-field{max-width:760px}
+
+/* ============ PÁGINA: PRECISO DE AJUDA ============
+   .help-band = faixa urucum · .num = números 188/192 gigantes
+   .topo-disc = círculo de curvas de nível atrás dos números */
+.help-band{position:relative;background:var(--urucum-deep);color:#F6EFE3;--ink:#F6EFE3;--ink-soft:#F3D9CC;--accent-em:#F7CB86;padding-block:clamp(44px,7vw,100px) clamp(40px,6vw,70px)}
+.help-band h2{font-size:clamp(3.2rem,10.5vw,7.4rem);line-height:.86;margin-top:20px}
+.help-band .big-line{font-family:var(--display);font-size:clamp(1.5rem,3.6vw,2.4rem);line-height:1.15;margin-top:26px;max-width:20ch;font-variation-settings:"SOFT" 100,"opsz" 72}
+.numbers{display:grid;gap:56px;padding-block:clamp(60px,8vw,110px) 30px}
+@media (min-width:900px){.numbers{grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px}.n188{grid-column:1 / span 6}.n192{grid-column:7 / span 6;margin-top:170px}}
+.num-block{position:relative;display:grid;gap:10px;isolation:isolate;justify-items:start}
+.num-block strong{font-family:var(--display);font-weight:450;font-size:1.3rem;line-height:1.2}
+.num-block .num{font-family:var(--display);font-weight:300;font-size:clamp(7rem,28vw,13.5rem);line-height:.78;letter-spacing:-.06em;color:var(--urucum-ink);user-select:all;font-variant-numeric:lining-nums;margin-block:6px 10px}
+.n192 .num{color:var(--ink)}
+.num-block p{max-width:36ch}
+.topo-disc{position:absolute;z-index:-1;width:clamp(220px,46vw,440px);aspect-ratio:1;left:-16%;top:-14%;border-radius:50%;background:var(--urucum);opacity:.22;-webkit-mask-image:var(--tex-topo,none);mask-image:var(--tex-topo,none);-webkit-mask-size:cover;mask-size:cover}
+.n192 .topo-disc{background:var(--ink);opacity:.12;left:auto;right:-10%;top:-20%}
+.local{padding-block:40px 20px}
+.local h3,.dir-sus h3,.dir-how h3{font-size:clamp(1.7rem,3.6vw,2.4rem);font-weight:340;margin-bottom:12px}
+.leaders{margin:0;display:flex;flex-direction:column}
+.leaders > div{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding-block:18px;border-top:1px solid var(--line)}
+.leaders dt{font-family:var(--display);font-size:1.35rem;line-height:1.2}
+.leaders dd{margin:0;color:var(--ink-soft);grid-column:1}
+.leaders .chip{grid-column:2;grid-row:1}
+@media (max-width:600px){.leaders > div,.line{grid-template-columns:1fr}.leaders .chip,.line .chip{grid-column:1;grid-row:auto}}
+.chip{display:inline-block;font-size:.82rem;font-style:italic;color:var(--ink-soft);border-bottom:1px dashed var(--ink-soft);background:none;padding:0;border-radius:0;justify-self:start;align-self:start;white-space:nowrap}
+.chip.ex{font-style:normal;text-transform:uppercase;letter-spacing:.14em;font-size:.64rem;font-weight:700;color:var(--urucum-ink);border:1px solid currentColor;padding:2px 6px}
+.help-foot{padding-block:10px 50px}
+
+/* ============ PÁGINA: PSICÓLOGOS E SERVIÇOS ============
+   .line = serviços do SUS · .psi = parceiro, com .mono (arco com a inicial)
+   A cor do arco muda pelo tipo de valor: .val-gratuito/.val-social/.val-particular */
+.dir-head{position:relative;padding-block:clamp(40px,6vw,90px) 30px}
+.dir-head h2{font-size:clamp(2.8rem,8vw,6rem);line-height:.9;margin-top:20px;max-width:9.5ch}
+.dir-head .lead{margin-top:22px}
+.dir-arch{position:absolute;z-index:0;right:calc(var(--gut) * -1 + 8px);top:clamp(20px,5vw,60px);width:clamp(96px,22vw,270px);aspect-ratio:3/4.1;border-radius:999px 999px 0 0;overflow:hidden;background:var(--leaf)}
+.dir-arch i{position:absolute;inset:0;background:var(--paper);opacity:.38;-webkit-mask-image:var(--tex-topo,none);mask-image:var(--tex-topo,none);-webkit-mask-size:cover;mask-size:cover}
+.dir-arch::after{content:"";position:absolute;width:46%;aspect-ratio:1;border-radius:50%;background:var(--sun);left:12%;bottom:-16%}
+@media (min-width:900px){.dir-arch{right:6%}}
+.dir-head > *:not(.dir-arch){position:relative;z-index:1}
+@media (max-width:899px){.dir-head .kicker,.dir-head h2{padding-right:24vw;max-width:none}}
+.dir-sus{padding-block:40px 30px}
+.lines{display:flex;flex-direction:column}
+.line{display:grid;grid-template-columns:1fr auto;gap:4px 20px;padding-block:18px;border-top:1px solid var(--line);border-radius:0;background:none}
+.line .eyebrow{grid-column:1 / -1}
+.line strong{font-family:var(--display);font-weight:420;font-size:1.35rem;line-height:1.2}
+.line .chip{grid-column:2;grid-row:2}
+.line .muted{grid-column:1 / -1;max-width:60ch}
+@media (min-width:900px){.dir-sus .lines{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}}
+.partners{padding-block:clamp(56px,7vw,90px)}
+.partners h3{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:340}
+.partners .filter{margin-top:20px}
+.psi-grid{display:flex;flex-direction:column;margin-top:10px}
+@media (min-width:900px){.psi-grid{display:grid;grid-template-columns:1fr 1fr;column-gap:56px}}
+.psi{display:grid;grid-template-columns:auto 1fr;gap:22px;padding-block:26px;border-top:1px solid var(--line);align-items:start}
+.psi-body{display:flex;flex-direction:column;gap:9px;min-width:0}
+.psi-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.psi h3{font-size:1.45rem}
+.mono{position:relative;width:70px;height:94px;border-radius:999px 999px 0 0;overflow:hidden;background:var(--leaf);display:grid;place-items:end center}
+.mono i{position:absolute;inset:0;background:var(--paper);opacity:.4;-webkit-mask-image:var(--tex-topo,none);mask-image:var(--tex-topo,none);-webkit-mask-size:240px;mask-size:240px}
+.mono span{position:relative;font-family:var(--display);font-size:2.5rem;line-height:1;padding-bottom:10px;color:#F6EFE3}
+.val-social .mono{background:var(--sun)} .val-social .mono span{color:#10262A} .val-social .mono i{background:#10262A;opacity:.18}
+.val-particular .mono{background:var(--deep)}
+.tags{display:flex;flex-wrap:wrap;gap:6px 16px}
+.tag{display:inline-flex;align-items:center;gap:7px;font-size:.7rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);background:none!important;padding:0}
+.tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line)}
+.tag.free::before{background:var(--leaf)} .tag.social::before{background:var(--sun)}
+#psi-contact{scroll-margin-top:84px;margin-top:28px}
+.dir-how{padding-block:10px 60px;display:grid;gap:20px}
+@media (min-width:900px){.dir-how{grid-template-columns:minmax(0,4fr) minmax(0,7fr);column-gap:60px}}
+.dir-how ul{list-style:none;padding:0;margin:0}
+.dir-how li{position:relative;padding:12px 0 12px 30px;border-top:1px solid var(--line)}
+.dir-how li::before{content:"";position:absolute;left:0;top:19px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--leaf)}
+
+/* ============ PÁGINA: MATERIAIS (cartões postais em degraus) ============ */
+.mat-head{padding-block:clamp(40px,6vw,90px) 10px;display:grid;gap:20px}
+@media (min-width:900px){.mat-head{grid-template-columns:minmax(0,7fr) minmax(0,4fr);align-items:end;column-gap:50px}}
+.mat-head h2{font-size:clamp(2.8rem,8vw,5.8rem);line-height:.9;margin-top:20px}
+.postcards{display:grid;gap:30px;padding-block:40px 80px}
+@media (min-width:860px){.postcards{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;column-gap:34px;max-width:1000px}.postcards > :nth-child(even){margin-top:90px}}
+.postcards .panel{padding-top:56px;gap:14px}
+.postcards .panel::before{content:"";position:absolute;top:24px;left:clamp(24px,4vw,44px);width:18px;height:18px;border-radius:50%;background:var(--pc,var(--sun))}
+.postcards > :nth-child(2){--pc:var(--urucum)} .postcards > :nth-child(3){--pc:var(--leaf)} .postcards > :nth-child(4){--pc:var(--ink)}
+.postcards h3{font-size:1.6rem;font-weight:380}
+.postcards textarea{border:0;padding:0;background:none;font-family:var(--display);font-size:1.08rem;line-height:1.5;min-height:150px;field-sizing:content;resize:none;overflow:hidden;color:var(--ink);font-variation-settings:"SOFT" 80,"opsz" 24}
+
+/* ============ PÁGINA: SOBRE ============ */
+.about-grid{padding-block:clamp(40px,6vw,90px) 50px;display:grid;gap:36px;align-items:start}
+@media (min-width:980px){.about-grid{grid-template-columns:minmax(0,7fr) minmax(0,4fr);column-gap:70px}}
+.about-lead h2{font-size:clamp(3rem,9vw,6.4rem);line-height:.88;margin-top:20px}
+.about-lead .first{font-family:var(--display);font-size:clamp(1.35rem,2.8vw,1.9rem);line-height:1.3;margin-top:30px;font-variation-settings:"SOFT" 80,"opsz" 48}
+.about-lead p + p{margin-top:16px;max-width:60ch}
+.about-art{position:relative;width:min(70%,340px);aspect-ratio:3/4.2;border-radius:999px 999px 0 0;overflow:hidden;background:var(--deep);justify-self:end;margin-right:calc(var(--gut) * -1)}
+.about-art i{position:absolute;inset:0;background:var(--sun);opacity:.45;-webkit-mask-image:var(--tex-river,none);mask-image:var(--tex-river,none);-webkit-mask-size:cover;mask-size:cover}
+.about-art::after{content:"";position:absolute;width:52%;aspect-ratio:1;border-radius:50%;background:var(--sun);right:-14%;bottom:24%}
+.about-cols{display:grid;gap:50px;padding-block:20px 70px}
+@media (min-width:900px){.about-cols{grid-template-columns:minmax(0,6fr) minmax(0,5fr);column-gap:70px}}
+.about-cols h3{font:700 .72rem/1.3 var(--body);letter-spacing:.17em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px}
+.members{list-style:none;padding:0;margin:0}
+.members li{font-family:var(--display);font-size:clamp(1.3rem,2.7vw,1.85rem);line-height:1.2;padding-block:11px;border-top:1px solid var(--line);font-variation-settings:"SOFT" 70,"opsz" 48}
+.refs{list-style:none;padding:0;margin:0;display:grid;gap:12px;font-size:.88rem;color:var(--ink-soft);line-height:1.5}
+.refs li{position:relative;padding-left:20px}
+.refs li::before{content:"";position:absolute;left:0;top:.72em;width:10px;height:1.5px;background:var(--sun-ink)}
+
+/* ============ RODAPÉ ============
+   O espaço de baixo deixa lugar para o menu fixo do celular. */
+footer.site{position:relative;z-index:2;padding-block:60px calc(110px + env(safe-area-inset-bottom,0px))}
+@media (min-width:1100px){footer.site{padding-bottom:60px}}
+.foot{display:grid;gap:22px}
+@media (min-width:900px){.foot{grid-template-columns:minmax(0,7fr) minmax(0,5fr);align-items:end;column-gap:60px}}
+.foot .wm{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,7.6vw,5.6rem);line-height:.9;letter-spacing:-.03em;font-variation-settings:"SOFT" 100,"opsz" 144}
+.foot .wm em{font-style:italic;color:var(--sun)}
+.foot p{max-width:44ch}
+
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:12px 18px;font-weight:600;font-size:.9rem;z-index:40}
+/* ---------- toque e celular ----------
+   Tira o flash cinza ao tocar, evita o atraso de toque e impede que
+   segurar o dedo num botão selecione o texto dele. */
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,label,summary,select,[role="tab"]{touch-action:manipulation}
+.btn,.small-btn,.help-btn,.opts span,.seg button,.filter button,.tabs button,.bottomnav,.ix,.more a,.qa summary,.brand{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+
+/* ---------- resposta ao toque (vale para mouse e dedo) ----------
+   Botões encolhem 3% ao pressionar, em 160 ms. */
+.help-btn,.small-btn{transition:transform 160ms var(--ease-out)}
+.btn:active,.help-btn:active,.small-btn:active{transform:scale(0.97)}
+.opts:not(.vertical) span:active{transform:scale(0.97)}
+.opts.vertical span:active{background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.seg button,.filter button,.tabs button{transition:color 150ms ease,border-color 150ms ease,transform 160ms var(--ease-out)}
+.seg button:active,.filter button:active,.tabs button:active{transform:scale(0.97)}
+.bottomnav .g,.ix .g{transition:transform 160ms var(--ease-out)}
+.bottomnav a:active .g,.bottomnav button:active .g,.ix:active .g{transform:scale(0.88)}
+
+/* ---------- hover só onde existe mouse ----------
+   No celular, o hover fica "preso" depois do toque; por isso fica aqui. */
+@media (hover: hover) and (pointer: fine){
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.solid:hover::before{transform:scale(1.5)}
+  .deep .btn:hover{background:var(--on-deep);color:var(--deep)}
+  .small-btn:hover::after{transform:translateX(4px)}
+  .topnav a:hover{color:var(--ink)}
+  .opts.vertical span:hover::before{border-color:var(--ink)}
+  .hero-actions .btn:not(.solid):hover{background:none;color:var(--sun);border-bottom-color:var(--sun)}
+  .ix:hover .ix-arrow{transform:translateX(8px)}
+  .ix:hover .ix-t{color:var(--sun-ink)}
+  .ix.urgent:hover .ix-t{color:var(--urucum)}
+}
+
+/* ---------- entradas: nada surge do nada ----------
+   @starting-style define como o elemento começa ao aparecer.
+   Navegadores antigos ignoram e mostram direto, sem quebrar nada. */
+#cbi > *{transition:opacity 220ms var(--ease-out),transform 220ms var(--ease-out)}
+@starting-style{#cbi > *{opacity:0;transform:translateY(8px)}}
+#invite,#psi-contact{transition:opacity 220ms var(--ease-out),transform 220ms var(--ease-out)}
+@starting-style{#invite,#psi-contact{opacity:0;transform:translateY(-6px)}}
+.more{transition:opacity 220ms var(--ease-out),transform 260ms var(--ease-drawer)}
+@starting-style{.more{opacity:0;transform:translateY(16px)}}
+.toast{transition:opacity 200ms var(--ease-out),transform 200ms var(--ease-out)}
+@starting-style{.toast{opacity:0;transform:translate(-50%,12px)}}
+#ring{transition:stroke-dashoffset 1s linear}
+
+/* ---------- movimento reduzido ----------
+   Para quem ativou "reduzir movimento" no aparelho: tira os
+   deslocamentos e mantém só os esmaecimentos. */
+@media (prefers-reduced-motion: reduce){
+  .sun-disc{animation:none}
+  .btn:active,.help-btn:active,.small-btn:active,.opts span:active,.seg button:active,.filter button:active,.tabs button:active{transform:none}
+  .bottomnav a:active .g,.bottomnav button:active .g,.ix:active .g,.small-btn::after{transform:none!important}
+  #ring{transition:none}
+  @starting-style{#cbi > *,#invite,#psi-contact,.more{transform:none}}
+  @starting-style{.toast{transform:translate(-50%,0)}}
+}
+</style>
+<script>
+/* ---------------------------------------------------------------
+   TEXTURAS DA MARCA
+   Desenha duas imagens em um canvas invisível e guarda como variáveis
+   CSS: --tex-river (correntes de rio) e --tex-topo (curvas de nível).
+   Elas são usadas como máscara nos arcos e círculos. Roda antes do
+   conteúdo para a página já aparecer completa. Não usa dado nenhum
+   da pessoa.
+   --------------------------------------------------------------- */
+(function(){
+  try{
+    var S=600;
+    function cv(){ var c=document.createElement('canvas'); c.width=S; c.height=S; return c; }
+    var a=cv(), x=a.getContext('2d'); x.strokeStyle='#000'; x.lineWidth=2.2;
+    for (var k=-4;k<48;k++){ x.beginPath();
+      for (var px=0;px<=S;px+=5){ var y=k*13.5+16*Math.sin(px*.011+k*.33)+9*Math.sin(px*.027+k*.8)+4*Math.sin(px*.052+k*1.7); if(px) x.lineTo(px,y); else x.moveTo(px,y); }
+      x.stroke(); }
+    var b=cv(), z=b.getContext('2d'); z.strokeStyle='#000'; z.lineWidth=2;
+    for (var r=10;r<440;r+=13){ z.beginPath();
+      for (var t=0;t<=Math.PI*2+.05;t+=.035){ var rr=r+7*Math.sin(t*3+r*.05)+4*Math.sin(t*7-r*.08)+r*.07*Math.sin(t*2+1.3); var qx=300+rr*Math.cos(t), qy=310+rr*Math.sin(t)*.9; if(t) z.lineTo(qx,qy); else z.moveTo(qx,qy); }
+      z.closePath(); z.stroke(); }
+    var st=document.documentElement.style;
+    st.setProperty('--tex-river','url('+a.toDataURL()+')');
+    st.setProperty('--tex-topo','url('+b.toDataURL()+')');
+  }catch(e){}
+})();
+</script>
+
+<!-- Ícones da marca. Para usar: <svg class="g"><use href="#g-sun"/></svg>
+     g-home = início · g-gauge = teste · g-sun = pausa · g-leaf = ajuda · g-more = mais -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="g-home" viewBox="0 0 24 24"><path d="M5.5 15a6.5 6.5 0 0 1 13 0"/><path d="M2.5 19c3-2.2 6 2.2 9.5 0s6.5-2.2 9.5 0"/></symbol>
+  <symbol id="g-gauge" viewBox="0 0 24 24"><path d="M3.5 17a8.5 8.5 0 0 1 17 0"/><path d="M12 17l4.6-5.4"/><circle class="gfill" cx="12" cy="17" r="1.5"/></symbol>
+  <symbol id="g-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle class="gfill" cx="12" cy="12" r="3.4"/></symbol>
+  <symbol id="g-leaf" viewBox="0 0 24 24"><path d="M12 2.8c5.2 4.4 5.2 14 0 18.4-5.2-4.4-5.2-14 0-18.4z"/><path d="M12 7.5v9"/></symbol>
+  <symbol id="g-more" viewBox="0 0 24 24"><path d="M3 7.5c3-2 6 2 9 0s6-2 9 0M3 12.5c3-2 6 2 9 0s6-2 9 0M3 17.5c3-2 6 2 9 0s6-2 9 0"/></symbol>
+</svg>
+
+<!-- Topo fixo: marca, menu (só no computador) e botão "Preciso de ajuda" (sempre visível) -->
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="Cuidar de Quem Cuida, início">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><path class="m-sun" d="M6.5 19a9.5 9.5 0 0 1 19 0z"/><path class="m-river" d="M2.5 23c4.3-3 8.7 3 13.5 0s9.2-3 13.5 0"/></svg>
+      <span>Cuidar de <em>quem</em> cuida</span>
+    </a>
+    <nav class="topnav" aria-label="Seções">
+      <a href="#inicio">Início</a><a href="#como-estou">Como estou?</a><a href="#remedio">Remédio</a><a href="#pausas">Pausas</a><a href="#psicologos">Psicólogos</a><a href="#canal">Canal</a><a href="#direitos">Direitos</a><a href="#sobre">Sobre</a>
+    </nav>
+    <a class="help-btn" href="#ajuda"><svg class="g solid"><use href="#g-leaf"/></svg>Preciso de ajuda</a>
+  </div>
+</header>
+
+<main>
+<!-- ============ INÍCIO ============ -->
+<section class="view" data-view="inicio" aria-labelledby="t-inicio">
+  <!-- Faixa escura do topo, com borda curva embaixo -->
+  <div class="hero deep edge-b">
+    <svg class="river into-edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 C 96 16, 6 40, 56 64 S 74 90, 50 100"/></svg>
+    <div class="wrap hero-in">
+      <p class="kicker">Para profissionais de saúde da Amazônia</p>
+      <h1 id="t-inicio" style="margin-top:22px">Você cuida de todo mundo. <em>Quem cuida de você?</em></h1>
+      <p class="lead">Um guia rápido para reconhecer o esgotamento e cuidar de si, sem julgamento. Funciona no celular e leva poucos minutos.</p>
+      <div class="hero-actions">
+        <a class="btn solid" href="#como-estou">Fazer o teste</a>
+        <button class="btn" type="button" id="invite-btn" aria-expanded="false" aria-controls="invite">Compartilhar com colegas</button>
+      </div>
+      <!-- Painel do convite (abre pelo botão "Compartilhar com colegas") -->
+      <div class="panel stack" id="invite" hidden>
+        <div class="res-top"><strong>Convite</strong></div>
+        <div class="seg" role="group" aria-label="Para quem"><button type="button" data-inv="equipe" aria-pressed="true">Para a equipe</button><button type="button" data-inv="colega" aria-pressed="false">Para um colega</button></div>
+        <div class="field"><label for="inv-from">Assinar como <span class="muted" style="font-weight:400">(opcional)</span></label><input type="text" id="inv-from" maxlength="40" autocomplete="off" placeholder="Ex.: Enf. Ana, UBS Brasil Novo"></div>
+        <div class="chat"><div class="bubble" id="inv-preview"></div></div>
+        <div class="row"><a class="small-btn" id="inv-wa" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" href="#">Enviar no WhatsApp</a><button class="small-btn" type="button" id="inv-copy">Copiar convite</button></div>
+      </div>
+    </div>
+    <!-- Arco com textura + sol: atravessam a borda para a seção de baixo -->
+    <div class="hero-art" aria-hidden="true"><div class="arch"><i class="tex"></i></div><div class="sun-disc"></div></div>
+  </div>
+
+  <div class="home-rest">
+    <svg class="river" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 C 8 10, 96 26, 44 44 S 4 74, 62 86 S 50 97, 50 100"/></svg>
+    <!-- Atalhos em degraus -->
+    <div class="wrap entries">
+      <p class="kicker">Por onde começar</p>
+      <nav class="index" aria-label="Atalhos">
+        <a class="ix" href="#como-estou"><svg class="g"><use href="#g-gauge"/></svg><span class="ix-t">Como estou?</span><span class="ix-d">Descubra em 3 minutos como anda seu cansaço.</span><span class="ix-arrow" aria-hidden="true">→</span></a>
+        <a class="ix" href="#pausas"><svg class="g"><use href="#g-sun"/></svg><span class="ix-t">Pausa agora</span><span class="ix-d">5 minutos para respirar e soltar o corpo.</span><span class="ix-arrow" aria-hidden="true">→</span></a>
+        <a class="ix urgent" href="#ajuda"><svg class="g"><use href="#g-leaf"/></svg><span class="ix-t">Preciso de ajuda</span><span class="ix-d">Contatos e caminhos para agora.</span><span class="ix-arrow" aria-hidden="true">→</span></a>
+      </nav>
+    </div>
+
+    <!-- Números grandes. Fonte de cada dado no <small> -->
+    <div class="wrap why">
+      <div class="why-head">
+        <p class="kicker">Por que este site existe</p>
+        <h2>Quem orienta o uso racional de medicamentos <em>também adoece</em></h2>
+        <p class="muted">O esgotamento leva ao remédio por conta própria. O remédio alivia o sintoma, esconde o problema e adia o cuidado de verdade. Este site ajuda a quebrar esse ciclo.</p>
+      </div>
+      <div class="fact f1"><b>+96%</b><p>nas notificações de burnout no SUS entre 2014 e 2024, somando todas as profissões.</p><small>Treml et al., 2025</small></div>
+      <div class="fact f2"><b>24,2%</b><p>dos trabalhadores de enfermagem de hospitais públicos se automedicavam, sobretudo com analgésicos.</p><small>Barros, Griep e Rotenberg, 2009</small></div>
+      <div class="fact f3"><b>2,4%</b><p>das respostas de um levantamento nacional sobre burnout vieram da Região Norte. Menos dados não quer dizer menos risco.</p><small>ABMT, 2021</small></div>
+    </div>
+
+    <div class="wrap closing">
+      <blockquote>Buscar ajuda não é fraqueza. <span>É cuidado profissional aplicado a você.</span></blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMO ESTOU ============ -->
+<section class="view" data-view="como-estou" aria-labelledby="t-cbi" hidden>
+  <div class="wrap test-grid">
+    <header class="test-head">
+      <svg class="head-arc" viewBox="0 0 240 140" aria-hidden="true"><path d="M20 124 A100 100 0 0 1 220 124"/><line x1="120" y1="14" x2="120" y2="34"/><line x1="197.8" y1="46.2" x2="183.6" y2="60.4"/><text x="112" y="9">50</text><text x="202" y="42">75</text></svg>
+      <p class="kicker">Autoavaliação</p>
+      <h2 id="t-cbi">Como estou<em>?</em></h2>
+      <p class="lead">19 perguntas, uma por vez, sobre as últimas 4 semanas. O cálculo acontece só no seu celular: nenhuma resposta é enviada nem guardada.</p>
+      <p class="note sun"><strong>Isto é um rastreio, não um diagnóstico.</strong> Só um médico ou psicólogo pode avaliar o seu caso.</p>
+      <p class="fine" style="margin-top:14px">Perguntas baseadas no Copenhagen Burnout Inventory (Kristensen et al., 2005). Versão de demonstração do projeto acadêmico: antes da divulgação oficial, os itens devem ser substituídos pela versão validada em português.</p>
+    </header>
+    <!-- O teste é desenhado aqui pelo script (seção 4) -->
+    <div class="sheet stack" id="cbi"></div>
+  </div>
+</section>
+
+<!-- ============ REMÉDIO ============ -->
+<section class="view" data-view="remedio" aria-labelledby="t-rem" hidden>
+  <div class="wrap rem-head">
+    <p class="kicker">Uso racional de medicamentos</p>
+    <h2 id="t-rem">Remédio <em>não é</em> pausa</h2>
+    <p class="lead">Quando o cansaço aperta, o remédio parece a saída mais rápida. Mas aliviar o sintoma não resolve a causa, e o problema volta maior.</p>
+  </div>
+
+  <div class="deep edge-t edge-b cycle-band">
+    <svg class="river from-edge into-edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 C 90 30, 10 60, 50 100"/></svg>
+    <div class="wrap">
+      <h3>O ciclo que se repete</h3>
+      <!-- Diagrama do ciclo (computador). No celular aparece a lista logo abaixo -->
+      <svg class="cycle" viewBox="-10 0 660 400" role="img" aria-label="Ciclo em quatro passos: sobrecarga no trabalho leva a sintomas; os sintomas levam ao remédio por conta própria; o remédio esconde o problema; e tudo volta à sobrecarga.">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="c-head" d="M0 0L10 5L0 10z"/></marker></defs>
+        <circle class="c-track" cx="320" cy="200" r="130"/>
+        <path class="c-arc" d="M347 72.8 A130 130 0 0 1 447.2 173" marker-end="url(#ah)"/>
+        <path class="c-arc" d="M447.2 227 A130 130 0 0 1 347 327.2" marker-end="url(#ah)"/>
+        <path class="c-arc" d="M293 327.2 A130 130 0 0 1 192.8 227" marker-end="url(#ah)"/>
+        <path class="c-arc" d="M192.8 173 A130 130 0 0 1 293 72.8" marker-end="url(#ah)"/>
+        <circle class="c-s1" cx="320" cy="70" r="11"/><circle class="c-s2" cx="450" cy="200" r="10"/><circle class="c-s3" cx="320" cy="330" r="13"/><circle class="c-s4" cx="190" cy="200" r="10"/>
+        <text class="c-t" x="320" y="28" text-anchor="middle">1. Sobrecarga</text><text class="c-d" x="320" y="47" text-anchor="middle">plantões, escalas, distância</text>
+        <text class="c-t" x="474" y="196">2. Sintomas</text><text class="c-d" x="474" y="215">insônia, dor, ansiedade</text>
+        <text class="c-t" x="320" y="368" text-anchor="middle">3. Remédio por conta</text><text class="c-d" x="320" y="387" text-anchor="middle">alívio rápido, sem avaliação</text>
+        <text class="c-t" x="168" y="196" text-anchor="end">4. Problema escondido</text><text class="c-d" x="168" y="215" text-anchor="end">o cuidado é adiado</text>
+        <text class="c-mid" x="320" y="196" text-anchor="middle">O alívio de hoje</text><text class="c-mid" x="320" y="224" text-anchor="middle">alimenta o ciclo</text>
+      </svg>
+      <ol class="cycle-list" aria-hidden="true">
+        <li style="--c:var(--sun)"><strong>1. Sobrecarga</strong><span>plantões, escalas, distância</span></li>
+        <li style="--c:var(--on-deep)"><strong>2. Sintomas</strong><span>insônia, dor, ansiedade</span></li>
+        <li style="--c:var(--urucum)"><strong>3. Remédio por conta</strong><span>alívio rápido, sem avaliação</span></li>
+        <li style="--c:var(--on-deep-soft)"><strong>4. Problema escondido</strong><span>o cuidado é adiado, e tudo recomeça</span></li>
+        <li class="mid">O alívio de hoje alimenta o ciclo.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="wrap rem-body">
+    <div class="compare">
+      <h3>Tratamento acompanhado × automedicação</h3>
+      <div>
+        <div class="tbl-wrap">
+        <table class="cmp">
+          <thead><tr><th scope="col"><span class="sr">Aspecto</span></th><th scope="col">Tratamento acompanhado</th><th scope="col">Automedicação</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Quem avalia</th><td>Médico ou psiquiatra, com avaliação individual</td><td>Você mesmo, por conveniência e acesso fácil</td></tr>
+            <tr><th scope="row">O que trata</th><td>A causa: terapia, ajuste da carga de trabalho e remédio só se necessário</td><td>Só o sintoma do momento</td></tr>
+            <tr><th scope="row">Dependência</th><td>Risco controlado e reavaliado</td><td>Risco alto, e pode esconder depressão ou ansiedade</td></tr>
+            <tr><th scope="row">Acompanhamento</th><td>Retornos, ajuste e retirada gradual</td><td>Nenhum; o uso vira hábito</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="fine">O problema não é o medicamento. É trocar a avaliação pela conveniência do acesso.</p>
+      </div>
+    </div>
+    <div class="signs-wrap">
+      <h3>Sinais de alerta</h3>
+      <ul class="signs">
+        <li>Precisar de mais remédio para ter o mesmo efeito.</li>
+        <li>Não conseguir dormir ou trabalhar sem ele.</li>
+        <li>Esconder o uso de colegas ou da família.</li>
+        <li>Sentir mal-estar quando fica sem.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="urgent-band">
+    <div class="wrap"><svg class="g solid"><use href="#g-leaf"/></svg><p><strong>Se você usa remédio controlado sem prescrição, não pare de uma vez por conta própria.</strong> Alguns calmantes e remédios para dormir causam abstinência perigosa quando interrompidos de repente. Procure um médico ou farmacêutico para reduzir com segurança.</p></div>
+  </div>
+  <div class="wrap row actions"><a class="btn solid" href="#canal">Pedir orientação sem me identificar</a><a class="btn" href="#psicologos">Ver psicólogos e serviços</a></div>
+</section>
+
+<!-- ============ PAUSAS ============ -->
+<section class="view" data-view="pausas" aria-labelledby="t-pau" hidden>
+  <div class="wrap pause-head">
+    <div><p class="kicker">Recuperação do corpo</p><h2 id="t-pau" style="margin-top:20px">Pausas <em>ativas</em></h2></div>
+    <p class="lead">Rotinas curtas, sem equipamento, pensadas para o plantão, o barco e o intervalo entre turnos. Escolha uma e toque em Começar.</p>
+  </div>
+  <div class="deep edge-t edge-b pause-band">
+    <svg class="river from-edge into-edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 C 12 24, 92 52, 40 76 S 50 94, 50 100"/></svg>
+    <div class="wrap pause-grid">
+      <!-- Cronômetro: #ring = anel de progresso, #breath = círculo que respira, linha = horizonte -->
+      <div class="dial">
+        <svg viewBox="0 0 280 280" aria-hidden="true">
+          <circle class="d-back" cx="140" cy="140" r="134"/>
+          <circle class="d-track" cx="140" cy="140" r="122"/>
+          <circle id="ring" cx="140" cy="140" r="122" fill="none" stroke-linecap="butt" transform="rotate(-90 140 140)" stroke-dasharray="766.5" stroke-dashoffset="0"/>
+          <circle class="breath" id="breath" cx="140" cy="140" r="86"/>
+          <path class="d-horizon" d="M-60 196 C -10 184, 30 206, 80 196 S 170 184, 220 198 S 300 206, 340 192"/>
+        </svg>
+        <div class="center" aria-live="polite">
+          <div class="time" id="clock">0:00</div>
+          <div class="cue" id="cue"></div>
+          <div class="muted" id="steplabel" style="font-size:.92rem;margin-top:4px"></div>
+        </div>
+      </div>
+      <div class="pause-side stack">
+        <div class="tabs" role="tablist" aria-label="Rotinas" id="routine-tabs"></div>
+        <div class="row">
+          <button class="btn solid" id="play" type="button">Começar</button>
+          <button class="btn" id="skip" type="button">Próximo passo</button>
+          <button class="small-btn" id="reset" type="button">Recomeçar</button>
+        </div>
+        <label class="checks"><input type="checkbox" id="sound"> Som suave na troca de passo</label>
+        <ol class="steps" id="steps"></ol>
+        <p class="note" id="routine-note"></p>
+      </div>
+    </div>
+  </div>
+  <!-- Alimentação no plantão (curso de Nutrição). Orientações gerais, não individuais. -->
+  <div class="wrap food">
+    <div class="food-head">
+      <p class="kicker">Nutrição</p>
+      <h3>Comer também <em>é pausa</em></h3>
+      <p class="muted">Quem cuida de todo mundo costuma pular refeição, viver de café e esquecer a água. Pequenas escolhas ajudam o corpo a aguentar o turno.</p>
+    </div>
+    <ul class="food-list">
+      <li><strong>Não pule refeições.</strong> Leve algo simples para o plantão: fruta, castanha, pão com ovo ou um sanduíche.</li>
+      <li><strong>Beba água ao longo do turno.</strong> Deixe uma garrafa à vista. Sede e cansaço se confundem.</li>
+      <li><strong>Café com moderação.</strong> Evite nas últimas horas antes de dormir. Ele não substitui o descanso.</li>
+      <li><strong>Menos ultraprocessados e doces para "aguentar".</strong> Dão energia rápida e uma queda logo depois.</li>
+      <li><strong>Folhas verdes, feijão, peixe, ovos e castanhas</strong> estão entre os alimentos associados ao equilíbrio do humor.</li>
+      <li><strong>Chás calmantes com cuidado.</strong> Camomila e erva-cidreira são bem aceitos. O maracujá (passiflora) pode somar efeito com calmantes: pergunte ao farmacêutico.</li>
+    </ul>
+    <p class="note">Orientações gerais. Suplementos e dietas individuais devem ser orientados por nutricionista.</p>
+  </div>
+  <div class="wrap pause-foot"><p class="note warn"><strong>Pare se sentir dor, falta de ar ou tontura.</strong> As pausas são leves e não substituem avaliação de saúde.</p></div>
+</section>
+
+<!-- ============ CANAL ============ -->
+<section class="view" data-view="canal" aria-labelledby="t-can" hidden>
+  <div class="wrap letter-grid">
+    <div class="letter-side">
+      <p class="kicker">Canal sigiloso</p>
+      <h2 id="t-can">Sem nome.<br><em>Sem punição.</em></h2>
+      <p class="muted">Relate uma sobrecarga ou tire uma dúvida sobre medicamentos sem se identificar. As mensagens são lidas pela equipe de Farmácia do projeto, e as respostas gerais são publicadas no mural abaixo, sem identificar ninguém. Este canal não é usado para punir ninguém.</p>
+    </div>
+    <div class="stack" style="gap:30px">
+      <p class="note sun"><strong>Canal em configuração.</strong> O envio será ativado quando o grupo conectar o formulário anônimo. Por enquanto, os campos abaixo mostram como ele vai funcionar.</p>
+      <!-- Formulário DESLIGADO: nada é enviado (ver seção 7 do script antes de ligar) -->
+      <form class="letter" id="canal-form" novalidate>
+        <p class="salut">Para a equipe do projeto,</p>
+        <fieldset class="field">
+          <legend>Sobre o que você quer falar?</legend>
+          <div class="opts" style="margin-top:8px">
+            <label><input type="radio" name="tipo" id="tipo-sob" value="sobrecarga" checked><span>Sobrecarga no trabalho</span></label>
+            <label><input type="radio" name="tipo" id="tipo-med" value="medicamento"><span>Dúvida sobre medicamento</span></label>
+            <label><input type="radio" name="tipo" id="tipo-sug" value="sugestao"><span>Sugestão</span></label>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="msg">Sua mensagem</label>
+          <textarea id="msg" class="ruled" maxlength="2000" autocomplete="off" placeholder="Escreva do seu jeito. Não coloque seu nome nem o de colegas."></textarea>
+        </div>
+        <div class="field">
+          <label for="setor">Unidade ou setor <span class="muted" style="font-weight:400">(opcional)</span></label>
+          <input type="text" id="setor" maxlength="60" autocomplete="off" placeholder="Ex.: UBS rural, equipe fluvial">
+        </div>
+        <p class="fine">Não pedimos nome, e-mail ou telefone.</p>
+        <div><button class="btn solid" type="submit" disabled>Enviar (em breve)</button></div>
+      </form>
+      <p class="note">Se você estiver em sofrimento intenso agora, ligue <strong>188</strong> (CVV, 24 horas, gratuito).</p>
+      <div class="qa">
+        <h3>Perguntas respondidas</h3>
+        <details><summary>Posso tomar um calmante que sobrou de uma receita antiga?</summary><p class="muted">Não é seguro. Remédios para ansiedade e sono podem causar dependência e mascarar um quadro que precisa de avaliação. Procure um médico e, na dúvida sobre um remédio que você já usa, fale com o farmacêutico.</p></details>
+        <details><summary>Se eu contar que uso remédio por conta própria, vou ser punido?</summary><p class="muted">Não. O canal é anônimo e existe para orientar, não para fiscalizar. O objetivo é ajudar você a trocar o uso escondido por um cuidado acompanhado.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DIREITOS ============ -->
+<section class="view" data-view="direitos" aria-labelledby="t-dir" hidden>
+  <div class="wrap rights-head">
+    <p class="kicker">Organização do trabalho</p>
+    <h2 id="t-dir">Seus <em>direitos</em></h2>
+    <p class="lead">Esgotamento não é falha individual. Ele também depende de como o trabalho é organizado, e isso tem regra.</p>
+    <div class="rights">
+      <div class="right r1"><span class="big">NR-1</span><div><h3>Riscos psicossociais</h3><p>Desde a atualização de 2024, a Norma Regulamentadora nº 1 inclui os riscos psicossociais, como sobrecarga e pressão excessiva, no gerenciamento de riscos das instituições.</p></div></div>
+      <div class="right r2"><span class="big">LDRT</span><div><h3>Doença do trabalho</h3><p>Desde 2023, o burnout faz parte da Lista de Doenças Relacionadas ao Trabalho do Ministério da Saúde (Portaria GM/MS nº 1.999/2023).</p></div></div>
+      <div class="right r3"><span class="big">Desconexão</span><div><h3>Tempo fora do plantão</h3><p>Respeitar o tempo fora do plantão, sem mensagens e cobranças, é uma boa prática de saúde. Vale combinar isso com a equipe e a gestão.</p></div></div>
+    </div>
+  </div>
+  <div class="deep edge-t route-band">
+    <svg class="river from-edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 C 86 34, 14 62, 50 100"/></svg>
+    <div class="wrap">
+      <h3>Como levar o assunto <em style="color:var(--sun)">à gestão</em></h3>
+      <ol class="route">
+        <li>Anote fatos, não nomes: escalas seguidas, horas de deslocamento, falta de pausa.</li>
+        <li>Converse junto com colegas, para que o pedido seja da equipe.</li>
+        <li>Proponha uma medida concreta, como pausas de 10 minutos ou a revisão das escalas.</li>
+      </ol>
+      <div class="field letter-field">
+        <label for="modelo">Modelo de mensagem</label>
+        <textarea id="modelo" class="ruled">Olá. Gostaria de propor que a nossa unidade inclua os riscos psicossociais, como sobrecarga, escalas longas e múltiplos vínculos, no gerenciamento de riscos previsto na NR-1. Na nossa rotina, temos observado [descreva a situação, sem citar nomes]. Podemos marcar uma conversa sobre pausas durante o plantão e a revisão das escalas?</textarea>
+      </div>
+      <div style="margin-top:14px"><button class="small-btn" type="button" data-copy-from="modelo">Copiar mensagem</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AJUDA ============ -->
+<section class="view" data-view="ajuda" aria-labelledby="t-aju" hidden>
+  <div class="help-band edge-b">
+    <div class="wrap">
+      <p class="kicker">Agora</p>
+      <h2 id="t-aju">Preciso de <em>ajuda</em></h2>
+      <p class="big-line">Se você está em perigo agora, ligue 192.</p>
+    </div>
+  </div>
+  <div class="wrap numbers">
+    <div class="num-block n188">
+      <div class="topo-disc" aria-hidden="true"></div>
+      <span class="eyebrow">Para conversar agora</span>
+      <strong>CVV – Centro de Valorização da Vida</strong>
+      <span class="num">188</span>
+      <p class="muted">24 horas, ligação gratuita. Também atende pelo chat em cvv.org.br.</p>
+      <div class="row"><a class="small-btn" href="tel:188">Ligar</a><button class="small-btn" type="button" data-copy="188">Copiar número</button><a class="small-btn" href="https://cvv.org.br" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Abrir chat</a></div>
+    </div>
+    <div class="num-block n192">
+      <div class="topo-disc" aria-hidden="true"></div>
+      <span class="eyebrow">Emergência</span>
+      <strong>SAMU</strong>
+      <span class="num">192</span>
+      <p class="muted">Risco de vida, intoxicação ou crise grave.</p>
+      <div class="row"><a class="small-btn" href="tel:192">Ligar</a><button class="small-btn" type="button" data-copy="192">Copiar número</button></div>
+    </div>
+  </div>
+  <div class="wrap local">
+    <h3>Em Altamira</h3>
+    <dl class="leaders">
+      <div><dt>CAPS – Centro de Atenção Psicossocial</dt><span class="chip">Telefone e endereço a confirmar</span><dd>Atendimento em saúde mental pelo SUS, sem precisar de encaminhamento.</dd></div>
+      <div><dt>UBS de referência</dt><span class="chip">A confirmar</span><dd>A porta de entrada do SUS para consulta médica e acompanhamento.</dd></div>
+    </dl>
+  </div>
+  <div class="wrap help-foot"><p class="note">Para acompanhamento com psicólogo, veja <a href="#psicologos">Psicólogos e serviços</a>. Contar para alguém de confiança, um colega, familiar ou a chefia, também é um passo de cuidado.</p></div>
+</section>
+
+<!-- ============ PSICÓLOGOS ============ -->
+<section class="view" data-view="psicologos" aria-labelledby="t-psi" hidden>
+  <div class="wrap dir-head">
+    <div class="dir-arch" aria-hidden="true"><i></i></div>
+    <p class="kicker">Acompanhamento</p>
+    <h2 id="t-psi">Psicólogos <em>e serviços</em></h2>
+    <p class="lead">Comece pelos serviços gratuitos. Você escolhe com quem falar e o que contar: o site não envia nem guarda nada.</p>
+    <p class="note warn" style="margin-top:26px;max-width:640px"><strong>Em crise ou em perigo agora, ligue 188 (CVV) ou 192 (SAMU).</strong> Esta lista é para acompanhamento, não é serviço de emergência.</p>
+  </div>
+  <div class="wrap dir-sus">
+    <h3>Gratuito, pelo SUS e na região</h3>
+    <div class="lines">
+      <div class="line"><span class="eyebrow">Saúde mental</span><strong>CAPS de Altamira</strong><span class="chip">Telefone e endereço a confirmar</span><span class="muted">Atendimento psicológico e psiquiátrico pelo SUS, sem precisar de encaminhamento.</span></div>
+      <div class="line"><span class="eyebrow">Porta de entrada</span><strong>UBS de referência</strong><span class="chip">A confirmar</span><span class="muted">Acolhimento, consulta e encaminhamento para psicologia na rede pública.</span></div>
+      <div class="line"><span class="eyebrow">Saúde do trabalhador</span><strong>CEREST da região</strong><span class="chip">A confirmar</span><span class="muted">Centro de Referência em Saúde do Trabalhador: avalia adoecimento ligado ao trabalho, como o burnout.</span></div>
+      <div class="line"><span class="eyebrow">Formação</span><strong>Clínica-escola de Psicologia</strong><span class="chip">A levantar</span><span class="muted">Atendimento gratuito ou de baixo custo feito por estudantes com supervisão de professores.</span></div>
+    </div>
+  </div>
+  <div class="soft edge-t edge-b partners">
+    <div class="wrap">
+      <div class="res-top"><h3>Psicólogos parceiros</h3><span class="fine" id="psi-updated"></span></div>
+      <div class="filter" role="group" aria-label="Filtrar psicólogos" id="psi-filter">
+        <button type="button" data-f="todos" aria-pressed="true">Todos</button>
+        <button type="button" data-f="acessivel" aria-pressed="false">Gratuito ou valor social</button>
+        <button type="button" data-f="online" aria-pressed="false">Online</button>
+        <button type="button" data-f="presencial" aria-pressed="false">Presencial</button>
+      </div>
+      <!-- Lista e mensagem de contato são desenhadas pelo script (seção 9) -->
+      <div class="psi-grid" id="psi-list"></div>
+      <div class="panel stack" id="psi-contact" hidden></div>
+    </div>
+  </div>
+  <div class="wrap dir-how">
+    <h3>Como esta lista é feita</h3>
+    <div class="stack">
+      <ul>
+        <li>Todos têm registro ativo no Conselho Regional de Psicologia, conferido no Cadastro Nacional de Psicólogos.</li>
+        <li>Quem atende online também tem cadastro na plataforma e-Psi.</li>
+        <li>Cada profissional autorizou por escrito a divulgação dos seus dados.</li>
+        <li>Ninguém paga para aparecer. A ordem é: gratuito, valor social e particular; depois, ordem alfabética.</li>
+      </ul>
+      <p class="fine">É psicólogo(a) e quer participar? Fale com o grupo do projeto pela página <a href="#sobre">Sobre</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MATERIAIS ============ -->
+<section class="view" data-view="materiais" aria-labelledby="t-mat" hidden>
+  <div class="wrap mat-head">
+    <div><p class="kicker">Para a equipe</p><h2 id="t-mat">Materiais <em>de bolso</em></h2></div>
+    <p class="lead">Mensagens prontas para mandar no grupo da equipe. Funcionam mesmo com internet fraca.</p>
+  </div>
+  <!-- Cartões gerados pelo script (seção 8) -->
+  <div class="wrap postcards" id="share-cards"></div>
+</section>
+
+<!-- ============ SOBRE ============ -->
+<section class="view" data-view="sobre" aria-labelledby="t-sob" hidden>
+  <div class="wrap about-grid">
+    <div class="about-lead">
+      <p class="kicker">O projeto</p>
+      <h2 id="t-sob">Sobre</h2>
+      <p class="first">Este site faz parte do trabalho "Burnout e automedicação em profissionais da saúde: o paradoxo do cuidador doente na Amazônia", dos cursos de Farmácia, Educação Física e Nutrição da Faculdade Serra Dourada, em Altamira (PA).</p>
+      <p>A revisão da literatura mostrou que o esgotamento e a automedicação se alimentam: o cansaço leva ao remédio por conta própria, e o alívio do sintoma adia o cuidado adequado. Na Região Norte, grandes distâncias, deslocamento de barco e falta de profissionais pesam ainda mais, e há poucos estudos sobre a região.</p>
+      <p>A proposta junta as três áreas: a Farmácia cuida do rastreio e da orientação sobre medicamentos, sem punição; a Educação Física, das pausas ativas; e a Nutrição, da alimentação durante o plantão. Tudo com soluções de baixo custo pensadas para equipes do interior e ribeirinhas.</p>
+    </div>
+    <div class="about-art" aria-hidden="true"><i></i></div>
+  </div>
+  <div class="wrap about-cols">
+    <div>
+      <h3>Integrantes</h3>
+      <ul class="members">
+        <li>Josua Santos da Rocha</li><li>Diego Cruz</li><li>Reiwid Fleck</li><li>Murilo Sousa Pinho</li><li>Antônia Elivane Lima Fleck</li><li>Luiz Antônio Cardoso Barros</li><li>José Arthur Silva França</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Principais fontes</h3>
+      <ul class="refs">
+        <li>TREML, M. F. Q. et al. Síndrome de burnout no Brasil (2014–2024). Revista Brasileira de Medicina do Trabalho, v. 23, n. 3, 2025.</li>
+        <li>BARROS, A. R. R.; GRIEP, R. H.; ROTENBERG, L. Automedicação entre os trabalhadores de enfermagem de hospitais públicos. Revista Latino-Americana de Enfermagem, v. 17, n. 6, 2009.</li>
+        <li>ASSOCIAÇÃO BRASILEIRA DE MEDICINA DO TRABALHO. Pesquisa identifica altos níveis de síndrome de burnout e depressão em profissionais da saúde, 2021.</li>
+        <li>INSTITUTO DE ESTUDOS PARA POLÍTICAS DE SAÚDE. Escassez de profissionais da saúde: um desafio na Amazônia Legal, 2024.</li>
+        <li>KRISTENSEN, T. S. et al. The Copenhagen Burnout Inventory. Work &amp; Stress, v. 19, n. 3, 2005.</li>
+        <li>OCHENTEL, O.; HUMPHREY, C.; PFEIFER, K. Efficacy of exercise therapy in persons with burnout. Journal of Sports Science &amp; Medicine, v. 17, n. 3, 2018.</li>
+        <li>BRASIL. Portaria GM/MS nº 1.999/2023 (Lista de Doenças Relacionadas ao Trabalho) e Norma Regulamentadora nº 1.</li>
+        <li>ORGANIZAÇÃO MUNDIAL DA SAÚDE. CID-11, QD85 Burn-out.</li>
+      </ul>
+      <p class="fine" style="margin-top:20px">Conteúdo revisado em 27 de setembro de 2026.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="site deep edge-t">
+  <svg class="river from-edge" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M50 0 C 84 30, 18 58, 46 100"/></svg>
+  <div class="wrap foot">
+    <p class="wm">Cuidar de <em>quem</em> cuida</p>
+    <div class="stack" style="gap:10px">
+      <p>Conteúdo educativo. Não substitui avaliação de profissional de saúde. Em crise, ligue 188 (CVV) ou 192 (SAMU).</p>
+      <p class="fine">Faculdade Serra Dourada · Farmácia, Educação Física e Nutrição · Altamira, PA</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Menu inferior (só no celular) e gaveta "Mais" -->
+<nav class="bottomnav" aria-label="Navegação principal">
+  <a href="#inicio"><svg class="g"><use href="#g-home"/></svg>Início</a>
+  <a href="#como-estou"><svg class="g"><use href="#g-gauge"/></svg>Como estou</a>
+  <a href="#pausas"><svg class="g"><use href="#g-sun"/></svg>Pausas</a>
+  <a href="#ajuda"><svg class="g"><use href="#g-leaf"/></svg>Ajuda</a>
+  <button type="button" id="more-btn" aria-expanded="false" aria-controls="more"><svg class="g"><use href="#g-more"/></svg>Mais</button>
+</nav>
+<div class="more" id="more" hidden>
+  <a href="#psicologos">Psicólogos e serviços</a><a href="#remedio">Remédio não é pausa</a><a href="#canal">Canal sigiloso</a><a href="#direitos">Seus direitos</a><a href="#materiais">Materiais</a><a href="#sobre">Sobre o projeto</a>
+</div>
+<!-- Aviso rápido ("Copiado") -->
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* =====================================================================
+   CUIDAR DE QUEM CUIDA — lógica da página
+   ---------------------------------------------------------------------
+   Tudo roda no navegador de quem usa o site. Nada é enviado a servidor,
+   nada é salvo no aparelho (sem cookies, sem localStorage). Ao fechar ou
+   recarregar a página, as respostas somem.
+
+   Organização deste arquivo (na ordem em que aparece):
+     1. Segurança: funções que limpam textos antes de exibir
+     2. Navegação entre páginas (roteamento pelo #endereço)
+     3. Copiar texto e avisos rápidos ("Copiado")
+     4. Autoavaliação (perguntas, cálculo, resultado, recomendação)
+     5. Compartilhar resultado (texto para WhatsApp e cartão em imagem)
+     6. Pausas ativas (cronômetro, respiração, som)
+     7. Canal sigiloso (formulário ainda desligado)
+     8. Materiais de bolso (mensagens prontas)
+     9. Psicólogos parceiros (lista, filtros e mensagem de contato)
+    10. Convite para colegas (botão no início)
+
+   REGRA DE OURO PARA QUEM FOR EDITAR:
+   todo texto que vai para dentro de "innerHTML" precisa passar por esc().
+   Isso impede que um texto com < > vire código dentro da página (ataque
+   conhecido como XSS). As únicas exceções são trechos de HTML escritos
+   por nós mesmos aqui no código.
+   ===================================================================== */
+(function(){
+  'use strict';
+
+  /* ===================================================================
+     1. SEGURANÇA
+     =================================================================== */
+
+  /* Troca os caracteres especiais do HTML pelos seus códigos seguros.
+     Use SEMPRE que for exibir um texto (digitado pela pessoa ou vindo das
+     listas deste arquivo) dentro de innerHTML ou de um atributo. */
+  function esc(t){
+    return String(t == null ? '' : t).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  /* Mantém só os números de um telefone. Evita que alguém coloque, por
+     engano ou de propósito, outra coisa no link do WhatsApp. Aceita de 10
+     a 15 dígitos (padrão internacional com DDI); fora disso, devolve vazio. */
+  function onlyDigits(v){
+    var d = String(v == null ? '' : v).replace(/\D/g, '');
+    return (d.length >= 10 && d.length <= 15) ? d : '';
+  }
+
+  /* Atributos padrão para todo link que sai do site:
+     - noopener: a outra página não consegue controlar esta aba;
+     - noreferrer: a outra página não fica sabendo de onde a pessoa veio. */
+  var EXT = ' target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"';
+
+  /* Preferência de "movimento reduzido" do sistema. Quando ativa, as
+     animações de deslocamento são desligadas (ver o CSS também). */
+  var reduceM = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+
+  /* ===================================================================
+     2. NAVEGAÇÃO ENTRE PÁGINAS
+     -------------------------------------------------------------------
+     O site é uma página só. Cada "página" é uma <section data-view="...">
+     e o endereço depois do # diz qual mostrar (ex.: #pausas).
+     Só aceitamos nomes que existem na lista; qualquer outro vira #inicio.
+     =================================================================== */
+  var views = Array.prototype.slice.call(document.querySelectorAll('[data-view]'));
+  var ids = views.map(function(v){ return v.dataset.view; });
+  var more = document.getElementById('more'), moreBtn = document.getElementById('more-btn');
+  /* Páginas que ficam dentro do botão "Mais" no menu do celular */
+  var IN_MORE = ['psicologos','remedio','canal','direitos','materiais','sobre'];
+
+  function show(){
+    var id = (location.hash || '#inicio').slice(1);
+    if (ids.indexOf(id) < 0) id = 'inicio';                         // lista branca de páginas
+    views.forEach(function(v){ v.hidden = v.dataset.view !== id; });
+    // marca o item ativo nos dois menus (topo no computador, rodapé no celular)
+    document.querySelectorAll('.topnav a,.bottomnav a').forEach(function(a){
+      if (a.getAttribute('href') === '#'+id) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+    });
+    if (IN_MORE.indexOf(id) >= 0) moreBtn.setAttribute('aria-current','page'); else moreBtn.removeAttribute('aria-current');
+    more.hidden = true; moreBtn.setAttribute('aria-expanded','false');
+    window.scrollTo(0,0);
+    if (id !== 'pausas') pause();                                    // não deixa o cronômetro correndo escondido
+  }
+  window.addEventListener('hashchange', show);
+  moreBtn.addEventListener('click', function(){
+    more.hidden = !more.hidden;
+    moreBtn.setAttribute('aria-expanded', String(!more.hidden));
+  });
+
+
+  /* ===================================================================
+     3. COPIAR TEXTO E AVISOS RÁPIDOS
+     =================================================================== */
+  var toast = document.getElementById('toast'), toastTimer;
+
+  /* Mostra um aviso curto no rodapé da tela por 2,2 segundos */
+  function say(t){
+    toast.textContent = t;                                           // textContent: nunca interpreta HTML
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.hidden = true; }, 2200);
+  }
+
+  /* Copia um texto. Se o navegador não deixar, seleciona o campo para a
+     pessoa copiar manualmente (quando existe um campo de origem). */
+  function copy(text, el){
+    try {
+      navigator.clipboard.writeText(text).then(function(){ say('Copiado'); }, function(){ fallback(el); });
+    } catch(e){ fallback(el); }
+  }
+  function fallback(el){
+    if (el && el.select){ el.focus(); el.select(); say('Texto selecionado. Toque em copiar.'); }
+    else say('Não foi possível copiar. Selecione o texto e copie.');
+  }
+  /* Versão para textos sem campo de origem */
+  function copyText(t){ copy(t, null); }
+
+  /* Botões com data-copy="texto" ou data-copy-from="id-do-campo" */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-copy],[data-copy-from]'); if (!b) return;
+    if (b.dataset.copy) copy(b.dataset.copy);
+    else { var t = document.getElementById(b.dataset.copyFrom); if (t) copy(t.value, t); }
+  });
+
+
+  /* ===================================================================
+     4. AUTOAVALIAÇÃO
+     -------------------------------------------------------------------
+     Baseada no Copenhagen Burnout Inventory (CBI): 19 perguntas em 3
+     partes. Cada resposta vale de 0 a 100; a nota de cada parte é a média
+     das suas perguntas. Faixas: 0–49 baixo, 50–74 moderado, 75–100 alto.
+
+     ATENÇÃO: os textos das perguntas abaixo são uma tradução de
+     demonstração. Antes de divulgar, troque pelos itens da versão
+     validada em português (mantendo a ordem e a pergunta invertida).
+     =================================================================== */
+
+  /* Escalas de resposta: [texto, pontos] */
+  var FREQ = [['Sempre',100],['Frequentemente',75],['Às vezes',50],['Raramente',25],['Nunca ou quase nunca',0]];
+  var INT  = [['Muitíssimo',100],['Muito',75],['Moderadamente',50],['Pouco',25],['Muito pouco',0]];
+
+  /* As 3 partes. Cada item: [pergunta, escala, invertida?]
+     "invertida" = true quando responder "sempre" é BOM (a nota é 100 − pontos). */
+  var BLOCKS = [
+    {t:'Esgotamento pessoal', part:'Você, de modo geral', items:[
+      ['Com que frequência você se sente cansado(a)?',FREQ],
+      ['Com que frequência você se sente fisicamente exausto(a)?',FREQ],
+      ['Com que frequência você se sente emocionalmente exausto(a)?',FREQ],
+      ['Com que frequência você pensa: "não aguento mais"?',FREQ],
+      ['Com que frequência você se sente esgotado(a)?',FREQ],
+      ['Com que frequência você se sente fraco(a) e mais propenso(a) a ficar doente?',FREQ]]},
+    {t:'Esgotamento ligado ao trabalho', part:'O seu trabalho', items:[
+      ['Seu trabalho é emocionalmente desgastante?',INT],
+      ['Você se sente esgotado(a) por causa do seu trabalho?',INT],
+      ['Seu trabalho deixa você frustrado(a)?',INT],
+      ['Você se sente exausto(a) ao fim de um dia de trabalho?',FREQ],
+      ['Você acorda exausto(a) só de pensar em mais um dia de trabalho?',FREQ],
+      ['Você sente que cada hora de trabalho é cansativa?',FREQ],
+      ['Você tem energia para a família e os amigos no tempo livre?',FREQ,true]]},
+    {t:'Esgotamento ligado aos pacientes', part:'As pessoas que você atende', items:[
+      ['Você acha difícil trabalhar com pacientes?',INT],
+      ['Você acha frustrante trabalhar com pacientes?',INT],
+      ['Trabalhar com pacientes esgota a sua energia?',INT],
+      ['Você sente que dá mais do que recebe ao trabalhar com pacientes?',INT],
+      ['Você está cansado(a) de trabalhar com pacientes?',FREQ],
+      ['Você às vezes se pergunta por quanto tempo vai conseguir continuar trabalhando com pacientes?',FREQ]]}
+  ];
+
+  /* Lista "achatada" das 19 perguntas, lembrando de qual parte cada uma é */
+  var Q = [];
+  BLOCKS.forEach(function(B,b){ B.items.forEach(function(it){ Q.push({b:b, it:it}); }); });
+
+  /* Estado da autoavaliação (só na memória, some ao recarregar) */
+  var ans = [];          // índice da opção escolhida em cada pergunta
+  var times = [];        // quanto tempo (ms) a pessoa levou em cada pergunta
+  var qi = -1;           // pergunta atual (-1 = tela de apresentação)
+  var shownAt = 0;       // quando a pergunta atual apareceu
+  var name = '';         // nome ou apelido (opcional)
+  var area = '';         // código da área de atuação (opcional)
+  var areaOther = '';    // texto livre quando a área é "Outra"
+  var med = null;        // resposta sobre remédio por conta própria (NUNCA é compartilhada)
+  var res = null;        // resultado calculado
+  var busy = false;      // evita pular duas perguntas com toques rápidos
+
+  /* Áreas de atuação: código → nome exibido */
+  var AREAS = {enf:'Enfermagem',med:'Medicina',farm:'Farmácia',acs:'Agente comunitário de saúde',odonto:'Odontologia',
+    fisio:'Fisioterapia',psi:'Psicologia',nutri:'Nutrição',edf:'Educação Física',social:'Serviço Social',
+    apoio:'Apoio ou administrativo na saúde',estudante:'Estudante da área da saúde',outra:'Outra área'};
+  function areaLabel(){
+    if (!area) return '';
+    if (area === 'outra') return areaOther;
+    return AREAS[area] || '';
+  }
+
+  /* Dica extra na recomendação conforme a área.
+     access = enfermagem, medicina e odontologia; as demais têm dica própria. */
+  var AREA_TIP = {
+    access: 'Na sua área, o acesso a medicamentos é mais fácil, e isso aumenta o risco de automedicação, que é comum entre profissionais de medicina, enfermagem e farmácia. Se um remédio parecer a saída para aguentar a rotina, trate isso como sinal para buscar avaliação.',
+    estudante: 'O hábito de se automedicar costuma começar ainda na formação: num estudo com estudantes de enfermagem do Amazonas, cerca de 3 em cada 4 se automedicavam. Cuidar de si agora protege a sua carreira.',
+    farm: 'Quem orienta o uso racional de medicamentos todos os dias tem o remédio ao alcance da mão, e isso torna a automedicação mais fácil e mais fácil de esconder. Se você sentir que precisa de um remédio para aguentar o turno, trate isso como sinal para buscar avaliação, e não como solução.',
+    edf: 'Trabalhar com movimento não protege do esgotamento. Cuidar do corpo dos outros não substitui o seu descanso. Se o treino virou obrigação, se o sono não recupera ou se a dor não passa, considere isso um sinal. Pausa também é treino.',
+    nutri: 'Quem orienta a alimentação dos outros também costuma pular refeições no plantão. Leve lanches simples, beba água ao longo do turno e evite trocar a refeição por café ou doce para aguentar o cansaço.',
+    acs: 'Visitas longas e deslocamentos, muitas vezes de barco, também são jornada de trabalho. Registre esse tempo e use esse dado ao conversar com a gestão. A pausa no barco foi pensada para esses trajetos.'
+  };
+  function areaTip(){
+    if (['enf','med','odonto'].indexOf(area) >= 0) return AREA_TIP.access;
+    return AREA_TIP[area] || '';
+  }
+
+  var box = document.getElementById('cbi');   // área onde o teste é desenhado
+
+  /* Converte uma nota (0–100) em nível, com nome e cor */
+  function level(m){
+    if (m < 50) return {n:0, name:'Baixo',    col:'var(--low)'};
+    if (m < 75) return {n:1, name:'Moderado', col:'var(--mid)'};
+    return          {n:2, name:'Alto',     col:'var(--high)'};
+  }
+
+  /* Barrinha de progresso */
+  function bar(p){ return '<div class="bar" aria-hidden="true"><b style="width:'+Number(p)+'%;background:var(--leaf)"></b></div>'; }
+
+  /* ---------- 4a. Tela de apresentação (nome e área) ---------- */
+  function renderIntro(){
+    var opts = '<option value="">Prefiro não dizer</option>' + Object.keys(AREAS).map(function(k){
+      return '<option value="'+k+'"'+(area===k?' selected':'')+'>'+esc(AREAS[k])+'</option>';
+    }).join('');
+    box.innerHTML =
+      '<div class="stack"><p class="eyebrow">Antes de começar</p><h3>Como responder</h3>'+
+      '<ul class="stack" style="padding-left:20px;margin:0;gap:6px">'+
+        '<li>Pense nas <strong>últimas 4 semanas</strong>, não só no dia de hoje.</li>'+
+        '<li>Não existe resposta certa ou errada. Marque o que acontece de verdade, não o que você gostaria que acontecesse.</li>'+
+        '<li>Responda pela primeira impressão, sem pensar demais, mas leia cada pergunta até o fim.</li>'+
+        '<li>São 19 perguntas, uma por vez. Leva cerca de 3 minutos.</li>'+
+      '</ul></div>'+
+      '<div class="field"><label for="cbi-name">Seu nome ou apelido <span class="muted" style="font-weight:400">(opcional)</span></label>'+
+      // autocomplete="off": o navegador não guarda o nome (importante em aparelho compartilhado)
+      '<input type="text" id="cbi-name" maxlength="40" autocomplete="off" autocapitalize="words" placeholder="Ex.: Ana" value="'+esc(name)+'">'+
+      '<span class="muted" style="font-size:.88rem">Aparece só no seu resultado e no que você decidir compartilhar. Nada é enviado.</span></div>'+
+      '<div class="field"><label for="cbi-area">Área de atuação <span class="muted" style="font-weight:400">(opcional)</span></label>'+
+      '<select id="cbi-area">'+opts+'</select>'+
+      '<input type="text" id="cbi-area-other" maxlength="40" autocomplete="off" placeholder="Qual é a sua área?" value="'+esc(areaOther)+'"'+(area==='outra'?'':' hidden')+'>'+
+      '<span class="muted" style="font-size:.88rem">Ajuda a deixar a recomendação mais próxima da sua rotina.</span></div>'+
+      '<div><button class="btn solid" type="button" id="cbi-start">Começar</button></div>';
+  }
+
+  /* ---------- 4b. Uma pergunta por vez ---------- */
+  function renderQ(){
+    var q = Q[qi], B = BLOCKS[q.b], cur = ans[qi];
+    var h = '<div class="stack" style="gap:8px"><div class="res-top">'+
+              '<span class="eyebrow">Parte '+(q.b+1)+' de 3 · '+esc(B.part)+'</span>'+
+              '<span class="muted" style="font-size:.88rem;font-variant-numeric:tabular-nums">'+(qi+1)+' de '+Q.length+'</span>'+
+            '</div>'+bar(Math.round(qi/Q.length*100))+'</div>';
+    h += '<fieldset class="stack" style="gap:14px"><legend class="qtext" id="qtext">'+esc(q.it[0])+'</legend><div class="opts vertical">';
+    q.it[1].forEach(function(o,j){
+      h += '<label><input type="radio" name="cbi-q" id="cbi-o'+j+'" value="'+j+'" data-opt="1"'+(cur===j?' checked':'')+'><span>'+esc(o[0])+'</span></label>';
+    });
+    h += '</div></fieldset><div class="row"><button class="btn" type="button" id="cbi-back">Voltar</button>'+
+         (cur !== undefined && qi < Q.length-1 ? '<button class="btn" type="button" id="cbi-fwd">Avançar</button>' : '')+'</div>';
+    box.innerHTML = h;
+    shownAt = Date.now();
+    // coloca o foco na resposta (ajuda quem usa teclado ou leitor de tela)
+    var first = box.querySelector('input:checked') || box.querySelector('input');
+    if (first) first.focus({preventScroll:true});
+  }
+
+  /* ---------- 4c. Cálculo das notas e verificação de qualidade ---------- */
+  function compute(){
+    var sc = BLOCKS.map(function(){ return {sum:0, n:0}; });
+    Q.forEach(function(q,i){
+      var v = q.it[1][ans[i]][1];
+      if (q.it[2]) v = 100 - v;                                     // pergunta invertida
+      sc[q.b].sum += v; sc[q.b].n++;
+    });
+    var scores = sc.map(function(x){ return Math.round(x.sum/x.n); });
+    var avg = Math.round((scores[0]+scores[1]+scores[2])/3);        // média geral das 3 partes
+    // tempo mediano por pergunta: abaixo de 1,5 s sugere respostas sem ler
+    var t = times.slice().sort(function(a,b){ return a-b; });
+    var midTime = t[Math.floor(t.length/2)] || 0;
+    var same = ans.every(function(v){ return v === ans[0]; });      // tudo igual também é suspeito
+    var flags = [];
+    if (midTime && midTime < 1500) flags.push('muitas respostas foram dadas muito rápido');
+    if (same) flags.push('todas as respostas foram iguais');
+    return {scores:scores, avg:avg, flags:flags};
+  }
+
+  /* Dica conforme a parte com a nota mais alta (índice = parte) */
+  var FOCUS = [
+    {t:'O cansaço geral é o que mais pesa.', d:'Proteja o sono e as refeições, beba água durante o plantão e evite trocar folgas por plantões extras enquanto se recupera.'},
+    {t:'O peso maior vem do trabalho.', d:'Anote fatos como escalas seguidas, horas de deslocamento e falta de pausa, e leve o assunto à gestão junto com colegas.', link:['#direitos','Usar o modelo de mensagem']},
+    {t:'O desgaste maior vem do cuidado direto das pessoas.', d:'Combine com a equipe pequenas pausas depois de atendimentos difíceis e procure espaços de conversa, como rodas de equipe ou supervisão.'}
+  ];
+
+  /* Plano de recomendação por nível (índice 0 = baixo, 1 = moderado, 2 = alto) */
+  var PLAN = [
+    {head:'Continue se cuidando', lead:'Seu nível de esgotamento parece baixo. O melhor agora é manter o que já funciona.', col:'var(--low)', items:[
+      'Mantenha pausas curtas durante o plantão, mesmo nos dias corridos.',
+      'Proteja o sono, as refeições e o tempo fora do trabalho.',
+      'Refaça este teste daqui a um mês, ou antes se a rotina apertar.',
+      'Compartilhe o site com um colega que pareça cansado.'], routine:['plantao','Fazer a pausa no plantão (6 min)']},
+    {head:'Hora de ajustar a rotina', lead:'Há sinais de desgaste. Eles tendem a crescer se nada mudar, então vale agir já nesta semana.', col:'var(--mid)', items:[
+      'Faça uma pausa ativa de 5 minutos em cada plantão desta semana.',
+      'Converse com alguém de confiança sobre como você está: um colega, familiar ou a chefia.',
+      'Evite resolver o cansaço com remédio por conta própria. Ele alivia hoje e esconde o problema.',
+      'Refaça o teste em 2 semanas. Se os sinais aumentarem, procure a UBS para uma avaliação.'], routine:['plantao','Começar a pausa no plantão']},
+    {head:'Procure avaliação profissional', lead:'Seu cansaço parece alto. Isso não é fraqueza, e existe tratamento. O passo mais importante agora é conversar com um profissional de saúde.', col:'var(--high)', items:[
+      'Marque uma consulta na UBS ou procure o CAPS de Altamira. Diga que o cansaço vem do trabalho.',
+      'Se for preciso, converse com a chefia sobre redução de carga ou afastamento. O burnout é reconhecido como doença relacionada ao trabalho.',
+      'Não use remédio por conta própria para aguentar a rotina. Leve à consulta tudo o que você tem usado.',
+      'Enquanto isso, faça pausas curtas e procure não ficar sozinho(a) com isso.'], routine:['plantao','Fazer uma pausa agora']}
+  ];
+
+  /* O nível geral usado na recomendação é o da PIOR parte (mais seguro) */
+  function overallOf(r){ return Math.max.apply(null, r.scores.map(function(m){ return level(m).n; })); }
+
+
+  /* ===================================================================
+     5. COMPARTILHAR RESULTADO
+     -------------------------------------------------------------------
+     A pessoa escolhe o formato e o que incluir. A resposta sobre remédio
+     por conta própria NUNCA entra no texto compartilhado.
+     =================================================================== */
+  var shareFmt = 'full';                                            // 'full' | 'short' | 'card'
+  var SHARE_KEYS = ['name','area','parts','steps'];                 // opções que podem ser ligadas/desligadas
+  var shareOpts = {name:true, area:true, parts:true, steps:true};
+  var shareMsg = '';                                                // mensagem pessoal opcional
+  var PARTS_1P = ['Eu, de modo geral','Meu trabalho','As pessoas que atendo'];
+
+  /* Barrinha em texto para o WhatsApp: ▰▰▰▰▰▱▱▱▱▱ */
+  function meter(v){ var n = Math.round(v/10); return '▰'.repeat(n)+'▱'.repeat(10-n); }
+  function today(){ try { return new Date().toLocaleDateString('pt-BR'); } catch(e){ return ''; } }
+
+  /* Monta o texto. *negrito* e _itálico_ seguem o padrão do WhatsApp. */
+  function shareText(r, fmt){
+    var P = PLAN[overallOf(r)], G = level(r.avg);
+    var who = (name && shareOpts.name) ? name : '';
+    var ar = shareOpts.area ? areaLabel() : '';
+    var msg = shareMsg ? '💬 '+shareMsg+'\n\n' : '';
+    if (fmt === 'short'){
+      return msg+'🌿 '+(who ? who+(ar ? ' ('+ar+')' : '')+' fez' : 'Fiz')+' a autoavaliação de cansaço do *Cuidar de Quem Cuida*: média *'+r.avg+'/100 ('+G.name.toLowerCase()+')*.\n'+
+        (ar && !who ? 'Área: '+ar+'.\n' : '')+
+        'Recomendação: *'+P.head+'*.\n_Rastreio, não diagnóstico._';
+    }
+    var t = msg + '*🌿 Cuidar de Quem Cuida*\n_Autoavaliação de cansaço'+(who ? ' · '+who : '')+(ar ? ' · '+ar : '')+' · '+today()+'_\n\n';
+    t += '*Média geral: '+r.avg+'/100 · '+G.name+'*\n'+meter(r.avg)+'\n';
+    if (shareOpts.parts){
+      t += '\n';
+      r.scores.forEach(function(m,i){ t += '• '+PARTS_1P[i]+': *'+m+'*\n   '+meter(m)+'\n'; });
+    }
+    t += '\n*Recomendação:* '+P.head+'\n';
+    if (shareOpts.steps){ P.items.slice(0,3).forEach(function(it,i){ t += (i+1)+'. '+it+'\n'; }); }
+    t += '\n_É um rastreio, não um diagnóstico. Em sofrimento intenso, ligue 188 (CVV)._';
+    return t;
+  }
+
+  /* Converte o texto do WhatsApp em HTML para a prévia.
+     SEGURANÇA: primeiro escapa TUDO com esc(); só depois transforma
+     *x* e _x_ em <b>/<i>. Assim nenhum texto digitado vira código. */
+  function waHTML(t){
+    return esc(t).replace(/\*([^*\n]+)\*/g,'<b>$1</b>').replace(/_([^_\n]+)_/g,'<i>$1</i>').replace(/\n/g,'<br>');
+  }
+
+  /* --- Desenho do cartão em imagem (canvas 1080×1350, formato de post) --- */
+  /* Retângulo com cantos arredondados */
+  function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  /* Escreve um texto quebrando linhas na largura máxima */
+  function wrap(ctx,text,x,y,maxW,lh){
+    var words = String(text).split(' '), line = '', lines = 0;
+    words.forEach(function(w){
+      var test = line ? line+' '+w : w;
+      if (ctx.measureText(test).width > maxW && line){ ctx.fillText(line,x,y+lines*lh); lines++; line = w; }
+      else line = test;
+    });
+    if (line){ ctx.fillText(line,x,y+lines*lh); lines++; }
+    return lines;
+  }
+  /* Cores fixas do cartão (a imagem não muda com o tema claro/escuro) */
+  function drawCard(r){
+    var W=1080, H=1350, c=document.createElement('canvas'); c.width=W; c.height=H; var x=c.getContext('2d');
+    var INK='#14262A', SOFT='#4C5C5E', LEAF='#3F6B45', LC={0:'#3F6B45',1:'#A8741C',2:'#C4502A'};
+    var D='"Fraunces", Georgia, serif', B='"Instrument Sans", Arial, sans-serif';
+    var P = PLAN[overallOf(r)], G = level(r.avg), who = (name && shareOpts.name) ? name : '';
+    // fundo, sol e linha de rio
+    x.fillStyle='#EFE9DC'; x.fillRect(0,0,W,H);
+    x.fillStyle='#F1DDB4'; x.beginPath(); x.arc(930,150,250,0,7); x.fill();
+    x.fillStyle='#E3A33B'; x.beginPath(); x.arc(930,150,105,0,7); x.fill();
+    x.strokeStyle=INK; x.lineWidth=5; x.lineCap='round'; x.beginPath(); x.moveTo(600,330); x.bezierCurveTo(730,290,850,370,1080,310); x.stroke();
+    // título, nome, área e data (canvas desenha texto puro: não há risco de código)
+    x.fillStyle=LEAF; x.font='800 28px '+B; x.fillText('AUTOAVALIAÇÃO DE CANSAÇO',90,150);
+    x.fillStyle=INK; x.font='600 68px '+D; wrap(x, who ? 'Resultado de '+who : 'Meu resultado', 90, 235, 560, 74);
+    var arC = shareOpts.area ? areaLabel() : ''; x.fillStyle=SOFT; x.font='400 32px '+B; x.fillText((arC ? arC+' · ' : '')+today(),90,380);
+    // média geral grande + selo do nível
+    x.fillStyle=SOFT; x.font='700 30px '+B; x.fillText('Média geral',90,460);
+    x.fillStyle=INK; x.font='650 200px '+D; x.fillText(String(r.avg),82,640);
+    var nw = x.measureText(String(r.avg)).width; x.fillStyle=SOFT; x.font='400 52px '+B; x.fillText('/100',100+nw,640);
+    x.font='800 30px '+B; var pw=x.measureText(G.name.toUpperCase()).width+56; x.fillStyle=LC[G.n]; rr(x,90,680,pw,58,29); x.fill();
+    x.fillStyle='#FFFFFF'; x.fillText(G.name.toUpperCase(),118,720);
+    // barras de cada parte (se a pessoa escolheu incluir)
+    var y=810;
+    if (shareOpts.parts){
+      r.scores.forEach(function(m,i){ var L=level(m);
+        x.fillStyle=INK; x.font='700 34px '+B; x.fillText(PARTS_1P[i],90,y);
+        x.textAlign='right'; x.font='650 40px '+D; x.fillText(String(m),990,y); x.textAlign='left';
+        x.fillStyle='#E2DACA'; rr(x,90,y+20,900,22,11); x.fill();
+        x.fillStyle=LC[L.n]; rr(x,90,y+20,Math.max(22,900*m/100),22,11); x.fill();
+        y+=92; });
+    }
+    // caixa da recomendação (altura ajusta ao tamanho do título)
+    x.font='600 46px '+D; var nl = x.measureText(P.head).width > 800 ? 2 : 1, bh = 110 + nl*52;
+    var by = Math.min(Math.max(y+14, 1040), 1250 - bh);
+    x.fillStyle='#F7F3EA'; rr(x,90,by,900,bh,28); x.fill(); x.strokeStyle='#CDC3AE'; x.lineWidth=2; x.stroke();
+    x.fillStyle=LC[overallOf(r)]; rr(x,90,by,14,bh,7); x.fill();
+    x.fillStyle=LEAF; x.font='800 26px '+B; x.fillText('RECOMENDAÇÃO',134,by+54);
+    x.fillStyle=INK; x.font='600 46px '+D; wrap(x,P.head,134,by+112,800,52);
+    x.fillStyle=SOFT; x.font='400 27px '+B; x.fillText('Cuidar de Quem Cuida · rastreio, não diagnóstico · CVV 188',90,1300);
+    return c.toDataURL('image/png');
+  }
+
+  /* Atualiza a prévia (balão do WhatsApp ou imagem) e os botões de envio */
+  function renderShare(){
+    var pv = document.getElementById('share-preview'), act = document.getElementById('share-actions');
+    if (!pv || !res) return;
+    box.querySelectorAll('[data-fmt]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.fmt === shareFmt)); });
+    var txt = shareText(res, shareFmt === 'card' ? 'short' : shareFmt);
+    if (shareFmt === 'card'){
+      pv.innerHTML = '<img class="cardimg" id="card-img" alt="Cartão com a média geral, as notas de cada parte e a recomendação">'+
+                     '<p class="muted" style="font-size:.88rem;text-align:center;margin-top:8px">Toque e segure a imagem para salvar ou enviar. No computador, clique com o botão direito.</p>';
+      var draw = function(){ try { var im = document.getElementById('card-img'); if (im) im.src = drawCard(res); } catch(e){} };
+      draw();
+      // redesenha quando as fontes terminarem de carregar
+      if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('600 60px "Fraunces"'), document.fonts.load('700 30px "Instrument Sans"')]).then(draw, function(){});
+    } else {
+      pv.innerHTML = '<div class="chat"><div class="bubble">'+waHTML(txt)+'<span class="meta">prévia no WhatsApp</span></div></div>';
+    }
+    // encodeURIComponent: o texto vai no link sem quebrar o endereço
+    act.innerHTML = '<a class="small-btn"'+EXT+' href="https://wa.me/?text='+encodeURIComponent(txt)+'">'+(shareFmt==='card'?'Enviar resumo no WhatsApp':'Enviar no WhatsApp')+'</a>'+
+                    '<button class="small-btn" type="button" id="share-copy">Copiar texto</button>';
+    act.dataset.text = txt;
+  }
+
+  /* ---------- 4d. Tela de resultado ---------- */
+  function renderResult(){
+    var r = res, G = level(r.avg);
+    var h = bar(100)+'<div class="stack" style="gap:6px"><p class="eyebrow">'+(name ? 'Resultado de '+esc(name) : 'Seu resultado')+(areaLabel() ? ' · '+esc(areaLabel()) : '')+'</p><h3>Como está o seu cansaço</h3></div>'+
+      '<div class="row"><button class="small-btn" type="button" id="jump-share">Compartilhar resultado</button>'+
+      '<button class="small-btn" type="button" id="cbi-clear">Apagar meus dados desta tela</button></div>';
+
+    // Medidor semicircular: arco de 180° (raio 100) com marcas em 50 e 75
+    var AL = Math.PI*100, off = (AL*(1-r.avg/100)).toFixed(1);
+    h += '<div class="avg"><svg class="gauge" viewBox="0 -8 240 146" role="img" aria-label="Média geral '+r.avg+' de 100, nível '+G.name.toLowerCase()+'">'+
+      '<path class="g-track" d="M20 124 A100 100 0 0 1 220 124"/>'+
+      '<path class="g-val" d="M20 124 A100 100 0 0 1 220 124" style="stroke:'+G.col+';stroke-dasharray:'+AL.toFixed(1)+';stroke-dashoffset:'+off+'"/>'+
+      '<line class="g-tick" x1="120" y1="12" x2="120" y2="36"/><line class="g-tick" x1="199.2" y1="44.8" x2="182.2" y2="61.8"/>'+
+      '<text class="g-lab" x="120" y="4" text-anchor="middle">50</text><text class="g-lab" x="205" y="38">75</text></svg>'+
+      '<div class="avg-num"><span class="score big">'+r.avg+'</span><span class="pill" style="--c:'+G.col+'">'+G.name+'</span></div>'+
+      '<p class="muted avg-cap">Média geral das três partes, de 0 a 100. A recomendação considera a parte com resultado mais alto.</p></div>';
+
+    // Nota de cada parte
+    h += '<div class="res">';
+    BLOCKS.forEach(function(B,b){
+      var m = r.scores[b], L = level(m);
+      h += '<div class="res-row"><div class="res-top"><strong>'+esc(B.part)+'</strong><span class="row"><span class="score">'+m+'</span><span class="muted">/100</span><span class="pill" style="--c:'+L.col+'">'+L.name+'</span></span></div>'+
+           '<div class="bar"><b style="width:'+m+'%;background:'+L.col+'"></b></div></div>';
+    });
+    h += '</div>';
+
+    // Aviso de qualidade das respostas
+    if (r.flags.length){
+      h += '<div class="note sun"><strong>Confira suas respostas:</strong> '+esc(r.flags.join(' e '))+'. Isso pode deixar o resultado menos preciso. Se quiser, refaça com calma, lendo cada pergunta até o fim.</div>';
+    } else {
+      h += '<p class="row" style="gap:8px;font-size:.9rem"><span class="pill" style="--c:var(--low)">Respostas consistentes</span><span class="muted">Tempo e variação das respostas dentro do esperado.</span></p>';
+    }
+
+    // Pergunta opcional sobre remédio (só ajusta a recomendação)
+    h += '<fieldset class="panel stack" style="background:var(--bg)"><legend class="eyebrow" style="padding:0 6px">Mais uma pergunta (opcional)</legend>'+
+         '<p style="font-weight:600">Nas últimas semanas, você usou algum remédio por conta própria para dormir, se acalmar ou aguentar a dor do trabalho?</p>'+
+         '<div class="opts">'+[['sim','Sim'],['nao','Não'],['nd','Prefiro não dizer']].map(function(o){
+           return '<label><input type="radio" name="med" id="med-'+o[0]+'" value="'+o[0]+'" data-med="1"'+(med===o[0]?' checked':'')+'><span>'+o[1]+'</span></label>';
+         }).join('')+'</div><p class="muted" style="font-size:.88rem">Esta resposta ajusta só a recomendação abaixo e nunca entra no que você compartilhar.</p></fieldset>';
+
+    h += '<div id="rec"></div>';
+
+    // Painel de compartilhamento
+    h += '<div class="panel stack" id="share-panel"><div class="stack" style="gap:4px"><h3>Compartilhar resultado</h3><p class="muted" style="font-size:.92rem">Monte do seu jeito e envie só para quem você confia. A resposta sobre remédio nunca entra aqui.</p></div>'+
+         '<div class="seg" role="group" aria-label="Formato"><button type="button" data-fmt="full" aria-pressed="'+(shareFmt==='full')+'">Mensagem completa</button><button type="button" data-fmt="short" aria-pressed="'+(shareFmt==='short')+'">Resumo curto</button><button type="button" data-fmt="card" aria-pressed="'+(shareFmt==='card')+'">Cartão (imagem)</button></div>'+
+         '<div class="checks">'+
+           (name ? '<label><input type="checkbox" id="sh-name" data-share="name"'+(shareOpts.name?' checked':'')+'> Mostrar meu nome</label>' : '')+
+           (areaLabel() ? '<label><input type="checkbox" id="sh-area" data-share="area"'+(shareOpts.area?' checked':'')+'> Mostrar minha área</label>' : '')+
+           '<label><input type="checkbox" id="sh-parts" data-share="parts"'+(shareOpts.parts?' checked':'')+'> Notas de cada parte</label>'+
+           '<label><input type="checkbox" id="sh-steps" data-share="steps"'+(shareOpts.steps?' checked':'')+'> Passos da recomendação</label></div>'+
+         '<div class="field"><label for="sh-msg">Mensagem sua <span class="muted" style="font-weight:400">(opcional)</span></label><input type="text" id="sh-msg" maxlength="140" autocomplete="off" placeholder="Ex.: Podemos conversar essa semana?" value="'+esc(shareMsg)+'"></div>'+
+         '<div id="share-preview"></div>'+
+         '<div class="row" id="share-actions"></div></div>';
+
+    h += '<div class="row"><button class="btn" type="button" id="cbi-again">Refazer o teste</button></div>';
+    box.innerHTML = h;
+
+    // Anima o medidor do zero até a nota (só uma vez, e só sem "movimento reduzido")
+    var gv = box.querySelector('.g-val');
+    if (gv && gv.animate && !reduceM){
+      try { gv.animate([{strokeDashoffset: AL.toFixed(1)},{strokeDashoffset: off}], {duration:900, easing:'cubic-bezier(0.23,1,0.32,1)'}); } catch(e){}
+    }
+    renderRec();
+    renderShare();
+  }
+
+  /* ---------- 4e. Recomendação ---------- */
+  function renderRec(){
+    var el = document.getElementById('rec'); if (!el || !res) return;
+    var overall = overallOf(res);
+    var top = res.scores.indexOf(Math.max.apply(null, res.scores));   // parte com a maior nota
+    var P = PLAN[overall];
+    var h = '<div class="rec stack" style="--c:'+P.col+'">';
+    h += '<p class="eyebrow" style="color:var(--ink)">'+(name ? 'Recomendação para '+esc(name) : 'Sua recomendação')+'</p><h3>'+esc(P.head)+'</h3><p>'+esc(P.lead)+'</p>';
+    h += '<ol class="stack" style="padding-left:20px;margin:0;gap:8px">'+P.items.map(function(t){ return '<li>'+esc(t)+'</li>'; }).join('')+'</ol>';
+    if (overall > 0){
+      var F = FOCUS[top];
+      h += '<div class="note"><strong>'+esc(F.t)+'</strong> '+esc(F.d)+(F.link?' <a href="'+esc(F.link[0])+'">'+esc(F.link[1])+'</a>':'')+'</div>';
+    }
+    var tip = areaTip();
+    if (tip){
+      var who = area==='acs' ? 'Para agentes comunitários de saúde' : area==='estudante' ? 'Para estudantes da área da saúde' : 'Para quem atua em '+areaLabel().toLowerCase();
+      h += '<div class="note"><strong>'+esc(who)+':</strong> '+esc(tip)+'</div>';
+    }
+    if (med === 'sim'){
+      h += '<div class="note warn"><strong>Sobre o remédio que você tem usado:</strong> se for um calmante ou remédio para dormir, não pare de uma vez, porque alguns causam abstinência. Peça orientação a um farmacêutico ou pelo canal sigiloso e conte na consulta. <a href="#canal">Abrir o canal sigiloso</a> · <a href="#remedio">Entender o ciclo</a></div>';
+    } else if (med === 'nao' && overall > 0){
+      h += '<div class="note">Que bom que você não recorreu ao remédio por conta própria. Se o cansaço apertar, lembre que ele alivia o sintoma e esconde o problema.</div>';
+    }
+    h += '<div class="row"><button class="btn solid" type="button" data-routine="'+esc(P.routine[0])+'">'+esc(P.routine[1])+'</button>';
+    if (overall >= 1) h += '<a class="btn" href="#psicologos">Ver psicólogos e serviços gratuitos</a>';
+    h += overall === 2 ? '<a class="btn" href="#ajuda">Preciso de ajuda agora</a>' : (overall === 0 ? '<a class="btn" href="#remedio">Remédio não é pausa</a>' : '');
+    h += '</div><p class="muted" style="font-size:.88rem">Trabalha em equipe fluvial? Use a <button type="button" data-routine="barco" class="linkbtn">pausa no barco</button>, feita sentado(a).</p>';
+    h += '<p style="font-size:.92rem"><strong>Se você estiver em sofrimento intenso, ligue 188 (CVV, 24 horas).</strong> Em perigo, ligue 192.</p></div>';
+    el.innerHTML = h;
+  }
+
+  /* ---------- 4f. Apagar tudo o que a pessoa digitou/respondeu ---------- */
+  /* Útil em celular ou computador compartilhado na unidade de saúde. */
+  function clearAll(){
+    ans = []; times = []; med = null; res = null;
+    name = ''; area = ''; areaOther = '';
+    shareMsg = ''; shareFmt = 'full';
+    shareOpts = {name:true, area:true, parts:true, steps:true};
+    psiBox.innerHTML = ''; psiBox.hidden = true; psiSel = null;       // fecha a mensagem ao psicólogo, que pode ter o nome
+    go(-1);
+    say('Dados apagados desta tela');
+  }
+
+  /* Vai para uma pergunta (n), para a apresentação (-1) ou para o resultado (19) */
+  function go(n){
+    qi = n;
+    if (qi < 0){ qi = -1; renderIntro(); }
+    else if (qi >= Q.length){ res = compute(); renderResult(); }
+    else renderQ();
+    box.scrollIntoView({block:'start'});
+  }
+
+  /* Eventos da área do teste (um ouvinte só para tudo o que é desenhado nela) */
+  box.addEventListener('input', function(e){
+    var id = e.target.id;
+    if (id === 'cbi-name') name = e.target.value.trim();
+    if (id === 'cbi-area-other') areaOther = e.target.value.trim();
+    if (id === 'sh-msg'){ shareMsg = e.target.value.trim(); renderShare(); }
+  });
+  box.addEventListener('change', function(e){
+    var t = e.target;
+    if (t.id === 'cbi-area'){
+      area = AREAS[t.value] ? t.value : '';                          // aceita só códigos conhecidos
+      var o = document.getElementById('cbi-area-other');
+      o.hidden = area !== 'outra'; if (!o.hidden) o.focus();
+      return;
+    }
+    if (t.dataset.med){ med = ['sim','nao','nd'].indexOf(t.value) >= 0 ? t.value : null; renderRec(); return; }
+    if (t.dataset.share){
+      if (SHARE_KEYS.indexOf(t.dataset.share) >= 0) shareOpts[t.dataset.share] = t.checked;   // lista branca de opções
+      renderShare(); return;
+    }
+    if (t.dataset.opt && !busy){
+      ans[qi] = Number(t.value);
+      times[qi] = Date.now() - shownAt;
+      busy = true;                                                   // pequena pausa para ver a marcação antes de avançar
+      setTimeout(function(){ busy = false; go(qi+1); }, 260);
+    }
+  });
+  box.addEventListener('click', function(e){
+    var id = e.target.id;
+    var fb = e.target.closest('[data-fmt]');
+    if (fb){ if (['full','short','card'].indexOf(fb.dataset.fmt) >= 0) shareFmt = fb.dataset.fmt; renderShare(); return; }
+    if (e.target.closest('#jump-share')){ document.getElementById('share-panel').scrollIntoView({block:'start', behavior: reduceM ? 'auto' : 'smooth'}); return; }
+    if (id === 'share-copy'){ copyText(document.getElementById('share-actions').dataset.text); return; }
+    if (id === 'cbi-clear'){ clearAll(); return; }
+    if (id === 'cbi-start'){
+      var n = document.getElementById('cbi-name'); name = n ? n.value.trim() : '';
+      var ar = document.getElementById('cbi-area'); area = ar && AREAS[ar.value] ? ar.value : '';
+      var ao = document.getElementById('cbi-area-other'); areaOther = ao ? ao.value.trim() : '';
+      go(0);
+    }
+    if (id === 'cbi-back') go(qi-1);
+    if (id === 'cbi-fwd') go(qi+1);
+    if (id === 'cbi-again'){ ans = []; times = []; med = null; res = null; shareMsg = ''; shareFmt = 'full'; go(-1); }
+    var rb = e.target.closest('[data-routine]');
+    if (rb && R[rb.dataset.routine]){ selectRoutine(rb.dataset.routine); location.hash = 'pausas'; }
+  });
+
+
+  /* ===================================================================
+     6. PAUSAS ATIVAS
+     -------------------------------------------------------------------
+     Cada rotina tem passos: [título, instrução, segundos, 'breath'?]
+     'breath' liga o guia de respiração (inspira 4 s, solta 6 s).
+     Para mudar uma rotina, edite só esta lista.
+     =================================================================== */
+  var R = {
+    plantao:{name:'Pausa no plantão', note:'Em pé, perto do posto ou na copa. Cerca de 6 minutos.', steps:[
+      ['Respire devagar','Inspire em 4 tempos e solte o ar em 6. Ombros soltos.',60,'breath'],
+      ['Ombros em círculos','Gire os ombros para trás, devagar, sem forçar.',45],
+      ['Pescoço','Leve a orelha em direção ao ombro. Troque de lado na metade.',60],
+      ['Punhos e dedos','Abra e feche as mãos, gire os punhos nos dois sentidos.',45],
+      ['Abrir o peito','Entrelace as mãos atrás das costas e leve o peito à frente.',45],
+      ['Panturrilhas','Suba na ponta dos pés e desça devagar, com apoio se precisar.',45],
+      ['Respiração final','Volte ao ritmo de 4 para 6. Perceba o corpo antes de voltar.',60,'breath']]},
+    barco:{name:'Pausa no barco', note:'Sentado(a), apenas com a embarcação estável. Cerca de 5 minutos.', steps:[
+      ['Pés firmes e respiração','Pés apoiados no chão. Inspire em 4, solte em 6.',60,'breath'],
+      ['Ombros sobem e descem','Leve os ombros às orelhas e solte de uma vez.',40],
+      ['Pescoço','Incline a cabeça para cada lado, sem pressa.',60],
+      ['Giro do tronco','Com as mãos nos joelhos, gire o tronco suavemente para cada lado.',40],
+      ['Pernas','Estenda uma perna de cada vez e puxe a ponta do pé para você.',60],
+      ['Respiração final','Olhe para o horizonte e respire devagar.',40,'breath']]},
+    turnos:{name:'Entre turnos', note:'Antes ou entre turnos, sem equipamento. Cerca de 15 minutos.', steps:[
+      ['Caminhada leve','Caminhe ou marche no lugar num ritmo em que dá para conversar.',300],
+      ['Braços e ombros','Estique os braços acima da cabeça e depois cruze cada um à frente do peito.',120],
+      ['Parte de trás das coxas','Com um pé à frente e o joelho reto, incline o tronco com a coluna longa.',120],
+      ['Frente das coxas','Com apoio na parede, segure o pé atrás. Troque de lado na metade.',120],
+      ['Panturrilha na parede','Mãos na parede, uma perna atrás com o calcanhar no chão.',90],
+      ['Respirar e soltar','Sacuda braços e pernas e termine com respirações lentas.',150,'breath']]}
+  };
+
+  var tabs = document.getElementById('routine-tabs'), list = document.getElementById('steps');
+  var clock = document.getElementById('clock'), cue = document.getElementById('cue'), label = document.getElementById('steplabel');
+  var ring = document.getElementById('ring'), breath = document.getElementById('breath'), note = document.getElementById('routine-note');
+  var play = document.getElementById('play');
+  var C = 766.5;                   // comprimento do anel (2 × π × raio 122)
+  var cur = 'plantao';             // rotina escolhida
+  var si = 0;                      // passo atual
+  var left = 0;                    // segundos restantes no passo
+  var timer = null;                // relógio (setInterval) quando está rodando
+  var total = 0, elapsed = 0;      // duração total e tempo já passado (para o anel)
+  var lock = null;                 // mantém a tela acesa durante a pausa, se o aparelho permitir
+  var actx = null;                 // áudio do "bip" suave
+
+  /* Cria as abas das rotinas (textContent: sem risco de código) */
+  Object.keys(R).forEach(function(k){
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('role','tab'); b.id = 'tab-'+k; b.textContent = R[k].name;
+    b.setAttribute('aria-selected', k === cur ? 'true' : 'false');
+    b.addEventListener('click', function(){ selectRoutine(k); });
+    tabs.appendChild(b);
+  });
+  function selectRoutine(k){
+    if (!R[k]) return;
+    cur = k;
+    tabs.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-selected', x.id === 'tab-'+k ? 'true' : 'false'); });
+    resetR();
+  }
+  function fmt(s){ return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+
+  /* Lista de passos com o atual destacado */
+  function drawList(){
+    list.innerHTML = R[cur].steps.map(function(s,i){
+      return '<li class="'+(i===si?'on':(i<si?'done':''))+'"><span class="n">'+(i+1)+'</span>'+
+             '<span><strong>'+esc(s[0])+'</strong><small>'+esc(s[1])+'</small></span><span class="d">'+fmt(s[2])+'</span></li>';
+    }).join('');
+  }
+
+  /* Atualiza relógio, anel de progresso e guia de respiração */
+  function draw(){
+    var S = R[cur].steps[si];
+    clock.textContent = fmt(left);
+    label.textContent = S ? S[0] : 'Pausa concluída';
+    ring.setAttribute('stroke-dashoffset', String(C*(1-(elapsed/total))));
+    if (S && S[3] === 'breath' && timer){
+      var t = (S[2]-left) % 10, inhale = t < 4;                       // ciclo de 10 s: 4 inspirando, 6 soltando
+      cue.textContent = inhale ? 'Inspire' : 'Solte o ar';
+      if (!reduceM){
+        var sc = inhale ? 0.8+0.2*((t+1)/4) : 1-0.2*((t-3)/6);       // o círculo cresce e encolhe junto
+        breath.style.transition = 'transform 1s linear';
+        breath.style.transform = 'scale('+sc.toFixed(3)+')';
+      }
+    } else { cue.textContent = S ? '' : 'Muito bem.'; breath.style.transform = 'scale(1)'; }
+  }
+
+  /* Bip suave na troca de passo (só se a pessoa ligou o som) */
+  function beep(){
+    if (!document.getElementById('sound').checked) return;
+    try {
+      actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.frequency.value = 528;
+      g.gain.setValueAtTime(0.0001, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.18, actx.currentTime+0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime+0.7);
+      o.connect(g); g.connect(actx.destination); o.start(); o.stop(actx.currentTime+0.75);
+    } catch(e){}
+  }
+  function next(){
+    si++; beep();
+    if (si >= R[cur].steps.length){ pause(); left = 0; elapsed = total; drawList(); draw(); play.textContent = 'Recomeçar'; return; }
+    left = R[cur].steps[si][2]; drawList(); draw();
+  }
+  function tick(){ left--; elapsed++; if (left <= 0) next(); else draw(); }
+  function start(){
+    if (si >= R[cur].steps.length) resetR();
+    timer = setInterval(tick, 1000); play.textContent = 'Pausar'; draw();
+    try { if (navigator.wakeLock) navigator.wakeLock.request('screen').then(function(l){ lock = l; }).catch(function(){}); } catch(e){}
+  }
+  function pause(){
+    if (timer){ clearInterval(timer); timer = null; }
+    play.textContent = 'Continuar';
+    if (lock){ try { lock.release(); } catch(e){} lock = null; }
+  }
+  /* Volta ao início da rotina. O anel volta direto, sem animar de trás para frente. */
+  function resetR(){
+    ring.style.transition = 'none';
+    pause(); si = 0;
+    var S = R[cur].steps; left = S[0][2];
+    total = S.reduce(function(a,s){ return a+s[2]; }, 0); elapsed = 0;
+    play.textContent = 'Começar'; note.textContent = R[cur].note; drawList(); draw();
+    void ring.getBoundingClientRect(); ring.style.transition = '';
+  }
+  play.addEventListener('click', function(){ timer ? pause() : start(); });
+  document.getElementById('skip').addEventListener('click', function(){ if (si < R[cur].steps.length){ elapsed += left; next(); } });
+  document.getElementById('reset').addEventListener('click', resetR);
+  resetR();
+
+
+  /* ===================================================================
+     7. CANAL SIGILOSO
+     -------------------------------------------------------------------
+     O formulário está desligado de propósito: nada é enviado.
+     PARA LIGAR, use um formulário externo que NÃO peça nome, e-mail ou
+     telefone e com coleta de e-mail desativada (ex.: Google Forms ou
+     Tally). Nunca envie os dados para um endereço de e-mail (mailto:) e
+     nunca guarde endereço IP. Ao ligar, libere o endereço do formulário
+     na regra "form-action" da política de segurança (ver o topo do HTML).
+     =================================================================== */
+  document.getElementById('canal-form').addEventListener('submit', function(e){ e.preventDefault(); });
+
+
+  /* ===================================================================
+     8. MATERIAIS DE BOLSO
+     -------------------------------------------------------------------
+     [título, texto]. O texto vai para um campo de leitura e para o link
+     do WhatsApp. Pode editar à vontade: tudo passa por esc().
+     =================================================================== */
+  var SH = [
+    ['Cartão de pausa','Pausa de 5 minutos: respire em 4 tempos e solte em 6, gire os ombros, alongue pescoço e punhos. Pare se sentir dor ou tontura. Mais em Cuidar de Quem Cuida.'],
+    ['Remédio não é pausa','O remédio por conta própria alivia o sintoma e esconde o esgotamento. Sinais de alerta: precisar de mais, não dormir sem ele, esconder o uso. Não pare um controlado de uma vez: procure médico ou farmacêutico.'],
+    ['Comer no plantão','Comer também é pausa: não pule refeições, leve lanches simples, beba água ao longo do turno e deixe o café longe da hora de dormir. Chá de maracujá (passiflora) pode somar efeito com calmantes: pergunte ao farmacêutico.'],
+    ['Contatos de ajuda','Em sofrimento? CVV 188 (24h, gratuito) e chat em cvv.org.br. Emergência: SAMU 192. Buscar ajuda não é fraqueza.']
+  ];
+  document.getElementById('share-cards').innerHTML = SH.map(function(s,i){
+    return '<div class="panel stack"><h3>'+esc(s[0])+'</h3>'+
+           '<textarea id="share-'+i+'" readonly>'+esc(s[1])+'</textarea>'+
+           '<div class="row"><a class="small-btn"'+EXT+' href="https://wa.me/?text='+encodeURIComponent(s[1])+'">Enviar no WhatsApp</a>'+
+           '<button class="small-btn" type="button" data-copy-from="share-'+i+'">Copiar</button></div></div>';
+  }).join('');
+
+
+  /* ===================================================================
+     9. PSICÓLOGOS PARCEIROS
+     -------------------------------------------------------------------
+     COMO EDITAR A LISTA:
+       - Só inclua quem assinou o Termo de Adesão e tem CRP ativo
+         (confira no Cadastro Nacional de Psicólogos).
+       - nome, crp, local, obs: texto livre.
+       - mod: ['online'] e/ou ['presencial'].
+       - valor: 'gratuito', 'social' ou 'particular'.
+       - whatsapp: só números, com DDI e DDD. Ex.: '5593999999999'.
+       - exemplo: true mostra a etiqueta "Exemplo"; use false para reais.
+       - Atualize PSI_UPDATED sempre que mexer na lista.
+     A função cleanPartner() confere cada registro: valores inválidos são
+     corrigidos ou o registro é ignorado (e um aviso aparece no console).
+     =================================================================== */
+  var PSI_UPDATED = '28/09/2026';
+  var PARCEIROS_RAW = [
+    {nome:'Clínica-escola parceira', crp:'Supervisão: CRP 10/00000', mod:['presencial'], valor:'gratuito', local:'Altamira – PA', obs:'Atendimento por estudantes de Psicologia com supervisão. Pode haver fila de espera.', whatsapp:'', exemplo:true},
+    {nome:'Psicóloga parceira A', crp:'CRP 10/00000', mod:['online','presencial'], valor:'social', local:'Altamira – PA', obs:'Horários à noite e aos fins de semana, pensados para quem faz plantão.', whatsapp:'', exemplo:true},
+    {nome:'Psicólogo parceiro B', crp:'CRP 10/00000', mod:['online'], valor:'particular', local:'Online para todo o Pará', obs:'Experiência com saúde do trabalhador e equipes de saúde.', whatsapp:'', exemplo:true}
+  ];
+  /* Rótulo e classe de cada tipo de valor, e a ordem de exibição */
+  var VAL = {gratuito:['Gratuito','free'], social:['Valor social','social'], particular:['Particular','']};
+  var VORD = {gratuito:0, social:1, particular:2};
+
+  /* Confere e limpa um registro da lista */
+  function cleanPartner(p){
+    if (!p || typeof p.nome !== 'string' || !p.nome.trim()){ console.warn('Parceiro ignorado: sem nome', p); return null; }
+    if (!VAL[p.valor]){ console.warn('Parceiro ignorado: valor inválido (use gratuito, social ou particular)', p.nome); return null; }
+    var mod = (Array.isArray(p.mod) ? p.mod : []).filter(function(m){ return m === 'online' || m === 'presencial'; });
+    if (!mod.length){ console.warn('Parceiro ignorado: modalidade inválida', p.nome); return null; }
+    return {
+      nome: p.nome.trim().slice(0,80), crp: String(p.crp||'').slice(0,60), local: String(p.local||'').slice(0,80),
+      obs: String(p.obs||'').slice(0,200), mod: mod, valor: p.valor,
+      whatsapp: onlyDigits(p.whatsapp), exemplo: p.exemplo !== false
+    };
+  }
+  var PARCEIROS = PARCEIROS_RAW.map(cleanPartner).filter(Boolean);
+
+  var psiF = 'todos';                // filtro ativo
+  var psiSel = null;                 // índice do parceiro com a mensagem aberta
+  var psiList = document.getElementById('psi-list'), psiBox = document.getElementById('psi-contact');
+  document.getElementById('psi-updated').textContent = 'Atualizado em '+PSI_UPDATED;
+
+  /* Ordem neutra: gratuito, social, particular; depois alfabética */
+  function sortedPsi(){
+    return PARCEIROS.map(function(p,i){ return {p:p, i:i}; }).sort(function(a,b){
+      return (VORD[a.p.valor]-VORD[b.p.valor]) || a.p.nome.localeCompare(b.p.nome,'pt');
+    });
+  }
+  function renderPsi(){
+    var L = sortedPsi().filter(function(o){
+      if (psiF === 'acessivel') return o.p.valor !== 'particular';
+      if (psiF === 'online' || psiF === 'presencial') return o.p.mod.indexOf(psiF) >= 0;
+      return true;
+    });
+    psiList.innerHTML = L.length ? L.map(function(o){
+      var p = o.p, v = VAL[p.valor];
+      return '<article class="psi val-'+p.valor+'">'+
+               '<div class="mono" aria-hidden="true"><i></i><span>'+esc(p.nome.charAt(0))+'</span></div>'+
+               '<div class="psi-body"><div class="psi-top"><h3>'+esc(p.nome)+'</h3>'+(p.exemplo?'<span class="chip ex">Exemplo</span>':'')+'</div>'+
+               '<span class="muted" style="font-size:.9rem">'+esc(p.crp)+' · '+esc(p.local)+'</span>'+
+               '<div class="tags"><span class="tag '+v[1]+'">'+v[0]+'</span>'+p.mod.map(function(m){ return '<span class="tag">'+(m==='online'?'Online':'Presencial')+'</span>'; }).join('')+'</div>'+
+               '<p class="muted">'+esc(p.obs)+'</p>'+
+               '<div><button class="small-btn" type="button" data-psi="'+o.i+'">Falar com '+(p.exemplo?'este contato':esc(p.nome.split(' ')[0]))+'</button></div></div>'+
+             '</article>';
+    }).join('') : '<p class="muted">Nenhum profissional com esse filtro ainda. Veja os serviços gratuitos acima.</p>';
+  }
+
+  /* Mensagem pronta para o psicólogo. O resumo do resultado só entra se
+     a pessoa marcar a caixa. A resposta sobre remédio nunca entra. */
+  function psiMessage(p, withRes){
+    var modTxt = p.mod.length > 1 ? 'online ou presencial' : p.mod[0];
+    var me = name ? 'Meu nome é '+name : 'Sou profissional de saúde';
+    var ar = areaLabel();
+    var t = 'Olá! Encontrei seu contato no site Cuidar de Quem Cuida. '+me+(ar ? ' e atuo em '+ar.toLowerCase() : '')+'. Gostaria de saber sobre atendimento '+modTxt+', horários e valores.';
+    if (withRes && res){
+      var G = level(res.avg);
+      t += '\n\nFiz uma autoavaliação de cansaço no site (é um rastreio, não um diagnóstico): média geral '+res.avg+'/100 ('+G.name.toLowerCase()+'). Por partes: eu, de modo geral, '+res.scores[0]+'; meu trabalho, '+res.scores[1]+'; as pessoas que atendo, '+res.scores[2]+'.';
+    }
+    return t;
+  }
+  /* Link do WhatsApp: número já limpo por onlyDigits() e texto codificado */
+  function waLink(p, t){ return 'https://wa.me/'+p.whatsapp+'?text='+encodeURIComponent(t); }
+
+  /* Abre o painel de mensagem para um parceiro */
+  function openContact(i){
+    var p = PARCEIROS[i]; if (!p) return;                            // índice inválido: ignora
+    psiSel = i;
+    psiBox.innerHTML =
+      '<div class="res-top"><h3>Mensagem para '+esc(p.nome)+'</h3><button class="small-btn" type="button" id="psi-close">Fechar</button></div>'+
+      '<p class="muted" style="font-size:.92rem">Edite como quiser antes de enviar. A mensagem sai do seu WhatsApp, e só você decide o que contar.</p>'+
+      '<div class="field"><label for="psi-msg">Sua mensagem</label><textarea id="psi-msg" autocomplete="off" style="min-height:170px">'+esc(psiMessage(p,false))+'</textarea></div>'+
+      (res ? '<div class="checks"><label><input type="checkbox" id="psi-res"> Incluir o resumo do meu resultado</label></div>'
+           : '<p class="muted" style="font-size:.9rem">Se quiser incluir um resumo do seu cansaço, faça antes a <a href="#como-estou">autoavaliação</a>.</p>')+
+      (p.exemplo ? '<div class="note sun" style="font-size:.9rem">Este é um contato de exemplo: o WhatsApp vai abrir sem destinatário.</div>' : '')+
+      '<div class="row"><a class="btn solid" id="psi-wa"'+EXT+' href="'+esc(waLink(p, psiMessage(p,false)))+'">Abrir no WhatsApp</a><button class="btn" type="button" id="psi-copy">Copiar mensagem</button></div>';
+    psiBox.hidden = false;
+    psiBox.scrollIntoView({block:'start', behavior: reduceM ? 'auto' : 'smooth'});
+  }
+  document.getElementById('psi-filter').addEventListener('click', function(e){
+    var b = e.target.closest('[data-f]'); if (!b) return;
+    psiF = b.dataset.f;
+    this.querySelectorAll('[data-f]').forEach(function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+    renderPsi();
+  });
+  psiList.addEventListener('click', function(e){
+    var b = e.target.closest('[data-psi]');
+    if (b) openContact(parseInt(b.dataset.psi, 10));
+  });
+  psiBox.addEventListener('click', function(e){
+    if (e.target.id === 'psi-close'){ psiBox.hidden = true; psiBox.innerHTML = ''; return; }   // fecha e apaga a mensagem
+    if (e.target.id === 'psi-copy') copyText(document.getElementById('psi-msg').value);
+  });
+  psiBox.addEventListener('change', function(e){
+    if (e.target.id === 'psi-res' && PARCEIROS[psiSel]){
+      var ta = document.getElementById('psi-msg');
+      ta.value = psiMessage(PARCEIROS[psiSel], e.target.checked);   // .value: texto puro, sem risco
+      document.getElementById('psi-wa').href = waLink(PARCEIROS[psiSel], ta.value);
+    }
+  });
+  psiBox.addEventListener('input', function(e){
+    if (e.target.id === 'psi-msg' && PARCEIROS[psiSel]) document.getElementById('psi-wa').href = waLink(PARCEIROS[psiSel], e.target.value);
+  });
+  renderPsi();
+
+
+  /* ===================================================================
+     10. CONVITE PARA COLEGAS (botão no início da página)
+     -------------------------------------------------------------------
+     SITE_URL: troque pelo endereço definitivo quando publicar o site.
+     =================================================================== */
+  var SITE_URL = 'https://ricardocontapremium-sketch.github.io/cuidar-de-quem-cuida/';
+  var inv = document.getElementById('invite'), invBtn = document.getElementById('invite-btn'), invTone = 'equipe';
+  function inviteText(){
+    var from = document.getElementById('inv-from').value.trim();
+    var t = invTone === 'equipe'
+      ? '*🌿 Cuidar de Quem Cuida*\nPessoal, achei um guia feito para a gente, profissionais de saúde da Amazônia:\n\n• Autoavaliação de cansaço em 3 minutos\n• Pausas ativas para o plantão e para o barco\n• Onde pedir ajuda, sem julgamento\n\n_Nada do que você responde é enviado._\n'
+      : '*🌿 Cuidar de Quem Cuida*\nLembrei de você. É um guia rápido para quem trabalha na saúde: tem um teste de cansaço de 3 minutos e pausas curtas para o plantão. Faz com calma e, se quiser, a gente conversa depois.\n';
+    t += '\n👉 '+SITE_URL;
+    if (from) t += '\n\n— '+from;
+    return t;
+  }
+  function renderInvite(){
+    var t = inviteText();
+    document.getElementById('inv-preview').innerHTML = waHTML(t)+'<span class="meta">prévia no WhatsApp</span>';   // waHTML já escapa
+    document.getElementById('inv-wa').href = 'https://wa.me/?text='+encodeURIComponent(t);
+    inv.querySelectorAll('[data-inv]').forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.inv === invTone)); });
+  }
+  invBtn.addEventListener('click', function(){
+    inv.hidden = !inv.hidden;
+    invBtn.setAttribute('aria-expanded', String(!inv.hidden));
+    if (!inv.hidden){ renderInvite(); inv.scrollIntoView({block:'nearest'}); }
+  });
+  inv.addEventListener('click', function(e){
+    var b = e.target.closest('[data-inv]');
+    if (b && (b.dataset.inv === 'equipe' || b.dataset.inv === 'colega')){ invTone = b.dataset.inv; renderInvite(); }
+    if (e.target.id === 'inv-copy') copyText(inviteText());
+  });
+  document.getElementById('inv-from').addEventListener('input', renderInvite);
+
+
+  /* Primeira exibição: abre a página indicada no endereço */
+  renderIntro();
+  show();
+})();
+</script>
+</body>
+</html>

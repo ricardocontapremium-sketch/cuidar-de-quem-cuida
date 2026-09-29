@@ -1,0 +1,20 @@
+# Cabeçalhos de segurança do site Cuidar de Quem Cuida
+# Funciona no Netlify e no Cloudflare Pages (coloque na raiz, junto do index.html).
+# No GitHub Pages este arquivo não funciona: use a política como <meta> no <head>
+# (instruções no comentário do topo do index.html).
+
+/*
+  # O que o navegador pode carregar: só o próprio site, as fontes do Google e imagens geradas na página.
+  # Ao ligar o canal sigiloso, troque form-action 'none' pelo endereço do formulário.
+  # Se mover os <script> para arquivos .js, tire o 'unsafe-inline' de script-src.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'
+  # Não informa a outros sites de onde a pessoa veio
+  Referrer-Policy: no-referrer
+  # Impede o navegador de "adivinhar" o tipo de arquivo
+  X-Content-Type-Options: nosniff
+  # Impede que o site seja aberto dentro de outro (proteção contra clique enganoso)
+  X-Frame-Options: DENY
+  # Desliga recursos que o site não usa
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  # Obriga HTTPS por 1 ano
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
